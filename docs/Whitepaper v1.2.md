@@ -1926,143 +1926,154 @@ The fee system is designed to keep YieldLoop alive long-term without needing inf
 
 ---
 
-## 12. Fee Model and Fee Routing
+## 13. Ratcheting Stability Reserve System (“Ratchet Engine”)
 
-YieldLoop is designed for sustainability. The fee system funds operations, growth, and long-term protocol resilience without requiring inflationary token emissions.
+YieldLoop is designed to survive long-term. That requires a system reserve that grows with protocol usage.
 
-YieldLoop charges fees only on realized profits.
-No fee is charged on deposits or principal.
+The Ratchet Engine exists to:
+- strengthen protocol resilience,
+- increase overcapitalization capacity,
+- support continuity during disruption,
+- and reduce fragility that destroys most DeFi systems.
 
----
-
-### 12.1 Fee Type
-
-YieldLoop uses a single fee type:
-
-- **Performance Fee (Realized Profit Fee)**
-
-This fee applies only when:
-- a trade closes, and
-- realized profit is confirmed
-
-If no profit is realized:
-- no fee is charged
+YieldLoop does not use the Ratchet Engine to promise token price gains.
+It exists as a stability mechanism, not a profit guarantee.
 
 ---
 
-### 12.2 Performance Fee Rates (USDT vs LOOP)
+### 13.1 Reserve Funding Source
 
-YieldLoop supports two payout modes with different fee rates:
+The Ratchet Engine is funded automatically through fee routing.
 
-#### USDT Payout Mode
-- **15%** of realized profit
+Fee allocation:
+- **55% of all performance fees** are routed into the Ratcheting Stability Reserve System.
 
-#### LOOP Payout Mode
-- **10%** of realized profit
+This means reserve growth is:
+- performance-driven
+- adoption-driven
+- sustainability-driven
 
-The reduced fee for LOOP payout exists because LOOP payout:
-- delays extraction pressure
-- aligns users with protocol incentives
-- supports token utility adoption
-- reduces constant sell behavior
+No reserve funding is pulled from user principal.
 
 ---
 
-### 12.3 Fee Calculation Timing
+### 13.2 Reserve Objectives
 
-Performance fees are deducted only when:
+The Stability Reserve is designed to support:
 
-> a position closes and realized profit is confirmed.
+1) **Protocol Continuity**
+   - ability to maintain infrastructure and operations
+   - ability to survive market downturns
 
-Fees are not charged on:
-- deposits
-- principal
-- unrealized value changes
+2) **System Resilience**
+   - ability to absorb shocks and disruptions
+   - reduced likelihood of cascading failure events
 
-Fee charging before settlement is not permitted.
+3) **Overcapitalization Capacity**
+   - increasing system backing capacity over time
+   - strengthening long-term system credibility
 
----
-
-### 12.4 Fee Routing Split (v1.2)
-
-All collected performance fees are split and routed into four categories:
-
-- **25% — Dev/Ops/Bills/Upkeep/Maintenance**
-- **10% — Marketing/Ads/Onboarding/Partnerships**
-- **55% — Ratcheting Stability Reserve System**
-- **10% — LoopLabs**
-
-This split is:
-- deterministic
-- auditable on-chain
-- enforced by protocol logic
+4) **Stability Actions (Restricted)**
+   - permitted actions must be rule-based and constrained
+   - no discretionary price manipulation mechanics
 
 ---
 
-### 12.5 Purpose of Each Allocation
+### 13.3 What the Reserve May Be Used For
 
-#### 12.5.1 Dev/Ops (25%)
-Supports ongoing protocol execution and continuity including:
-- contract maintenance and upgrade work (where applicable)
-- infrastructure support
-- monitoring systems
-- security tools
-- admin utilities
-- operational overhead
+The reserve may be used only under protocol-defined rules such as:
 
-YieldLoop assumes continuous operation requires continuous funding.
+- **Execution Continuity**
+  - emergency operational requirements
+  - critical infrastructure coverage during disruptions
 
-#### 12.5.2 Marketing / Growth (10%)
-Supports measured growth including:
-- onboarding funnels
-- advertising
-- partnerships
-- education campaigns
-- brand expansion
+- **Risk Event Absorption**
+  - extreme market dislocation mitigation
+  - MEV-driven disruption recovery (where applicable)
+  - abnormal slippage event recovery (where applicable)
 
-YieldLoop does not rely on “hype emission farming.”
-Growth must be paid for.
+- **Redemption / Liquidity Support Mechanisms** (if implemented)
+  - stability liquidity support
+  - protocol-controlled liquidity operations (restricted)
 
-#### 12.5.3 Ratcheting Stability Reserve (55%)
-The majority of fee allocation is routed into reserve mechanisms designed to strengthen:
-- protocol resilience
-- continuity
-- stability capacity
-- system overcapitalization
-
-This reserve does not guarantee token price outcomes.
-
-#### 12.5.4 LoopLabs (10%)
-LoopLabs funding is intended for:
-- experiments and innovation
-- future strategy R&D (non-v1)
-- auxiliary ecosystem projects approved under protocol rules
-
-LoopLabs exists as a structured innovation budget rather than random expansion.
+All reserve actions must be:
+- logged
+- auditable
+- rule-based
 
 ---
 
-### 12.6 Fee Integrity Requirements
+### 13.4 What the Reserve Will NOT Do
 
-Fee logic must be implemented with strict integrity:
+YieldLoop does not guarantee:
+- price floors
+- token appreciation
+- “ratchet always up”
+- profit protection
+- loss reimbursement
 
-- fees cannot be bypassed by timing or trade behavior
-- fees cannot be charged without realized profit
-- fees must route before profit becomes withdrawable
-- all routing must emit on-chain logs for auditing and indexing
+The reserve is not:
+- insurance
+- a backstop promise
+- a user guarantee
+- a refund pool
+
+YieldLoop avoids these claims by design because they are:
+- factually unsafe,
+- economically unsustainable,
+- and legally risky.
 
 ---
 
-### 12.7 Summary
+### 13.5 Reserve Control Philosophy (Rules Over Vibes)
 
-YieldLoop uses a simple, sustainable fee structure:
+The Ratchet Engine must be implemented as:
+- deterministic actions,
+- bounded by thresholds,
+- and governed by defined parameters.
 
-- fee only on realized profit
-- discounted fee when profits are taken in LOOP
-- deterministic routing split
-- reserve-first sustainability design
+Reserve usage should follow “modes” such as:
 
-The fee system is designed to keep YieldLoop alive long-term without needing inflationary token emissions or deceptive marketing.
+- **Build Mode**
+  - reserve accumulates only
+  - no aggressive actions
+
+- **Defensive Mode**
+  - reserve prioritizes system survival actions
+  - restricts any optional activities
+
+- **Stability Mode**
+  - reserve may perform permitted stability actions under strict rules
+  - no discretionary behavior
+
+The default posture is always conservative.
+
+---
+
+### 13.6 Reserve Transparency
+
+The system reserve must be visible and auditable.
+
+YieldLoop must display at minimum:
+- total reserve balance
+- reserve inflows (fee routing)
+- reserve outflows (if any)
+- reserve usage category tags
+
+Users must be able to verify reserve behavior on-chain.
+
+---
+
+### 13.7 Summary
+
+The Ratchet Engine is a sustainability mechanism funded by protocol performance fees.
+
+- It strengthens protocol durability.
+- It supports continuity during disruption.
+- It improves long-term resilience.
+- It does not promise profit or token price outcomes.
+
+YieldLoop survives by building reserves, not by selling dreams.
 
 ---
 
