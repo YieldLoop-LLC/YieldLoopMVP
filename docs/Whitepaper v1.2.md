@@ -26,11 +26,11 @@
 - USDT
 
 **Protocol Execution Style:**
-- Continuous trading (guardrail-limited)
-- Spread capture + PCS↔BiSwap arbitrage (when profitable after costs)
+- Opportunistic execution (guardrail-limited) — the system may trade frequently or remain idle depending on conditions
+- Spread capture + PCS↔BiSwap arbitrage (only when profitable after all costs)
 
 **Profit Options:**
-- Withdraw profits anytime (USDT) from realized profit balance
+- Withdraw **realized profit** anytime (USDT) — principal requires vault closeout settlement
 - Or elect LOOP rewards (monthly calendar distribution)
 
 **Compounding Options:**
@@ -849,6 +849,22 @@ YieldLoop is not a high-frequency trading bot. It is a conservative execution ma
 
 ---
 
+### 7.0 Execution Clarity (No Forced Trading)
+
+YieldLoop is not designed to trade constantly.
+It is designed to trade **only when conditions are favorable** and when the expected net outcome clears strict thresholds.
+
+Key rules:
+- the engine may execute multiple trades in a day **or none for extended periods**
+- the default state is **idle** unless an execution opportunity passes:
+  - profitability threshold (after fees + gas + slippage)
+  - liquidity threshold
+  - oracle sanity checks
+  - volatility / drawdown guardrails
+- if conditions are not met, YieldLoop does **nothing** (capital preservation is a valid outcome)
+
+---
+
 ### 7.1 Engine Architecture (High-Level)
 
 YieldLoop execution is composed of the following engines:
@@ -1583,17 +1599,21 @@ After compounding is applied, the remaining profit (if any) is routed based on p
 
 ---
 
-### 10.7 Withdrawals (Profit Withdrawal Anytime)
+### 10.7 Withdrawals (Realized Profit Withdrawal Anytime)
 
-YieldLoop supports “withdraw profits anytime,” but strictly under these rules:
+YieldLoop supports withdrawing **realized profit** at any time.
+This does **not** mean principal can be withdrawn at any time.
 
-- only **realized profit** can be withdrawn
-- withdrawal amount cannot exceed Withdrawable Profit Balance
-- withdrawal executes in USDT (BEP-20)
+YieldLoop withdrawal rules:
+- only **realized profit** (closed profit) can be withdrawn
+- withdrawal amount cannot exceed **Withdrawable Profit Balance**
+- withdrawal executes in **USDT (BEP-20)**
 - withdrawals require user wallet authorization
-- system enforces anti-reentrancy and state-safe withdrawal sequencing
+- the system enforces anti-reentrancy and state-safe withdrawal sequencing
 
 Profit withdrawals do not require closing the vault.
+
+Principal withdrawal requires vault closeout settlement (see 10.8).
 
 ---
 
