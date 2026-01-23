@@ -1095,6 +1095,8 @@ Core characteristics:
 
 LOOP rewards are never calculated from unrealized profit.
 
+Settlement uses UTC month boundaries (00:00 UTC on the 1st through 23:59:59 UTC on the last day).
+
 ---
 
 ### 7.13 Fail-Safe + Pause Engine
