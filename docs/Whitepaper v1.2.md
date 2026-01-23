@@ -1919,7 +1919,7 @@ YieldLoop supports two payout modes with different fee rates:
 The reduced fee for LOOP payout exists because LOOP payout:
 - delays extraction pressure
 - aligns users with protocol incentives
-- supports token utility adoption
+- supports protocol sustainability through aligned incentives
 - reduces constant sell behavior
 
 ---
