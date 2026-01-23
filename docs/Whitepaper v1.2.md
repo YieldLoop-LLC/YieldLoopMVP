@@ -31,7 +31,7 @@
 
 **Profit Options:**
 - Withdraw **realized profit** anytime (USDT) — principal requires vault closeout settlement
-- Or elect LOOP rewards (monthly calendar distribution)
+- Or elect LOOP rewards (optional monthly profit settlement in LOOP; claim-based)
 
 **Compounding Options:**
 - Compound All
@@ -173,7 +173,7 @@ Users configure each vault by selecting:
 
 ### 1.3 Profit and Withdrawal Model
 
-- YieldLoop operates continuously (bounded by guardrails).
+- YieldLoop operates continuously in monitoring, and executes opportunistically (bounded by guardrails).
 - Profits are produced only when trades close.
 - Realized profits can be withdrawn at any time in USDT (if USDT payout is selected).
 - If LOOP payout is selected:
@@ -1298,6 +1298,27 @@ YieldLoop would rather miss a profit than take a loss it didn’t need to take.
 
 ---
 
+### 9.1.1 What Happens In a Bad Month (Truth in Plain English)
+
+YieldLoop can have months where:
+- it trades very little or not at all (idle is allowed)
+- it produces zero realized profit (no fee is charged)
+- it experiences drawdown due to market movement while positions are open
+
+YieldLoop will not “force trades” to create activity.
+If conditions do not meet safety + expectancy thresholds, the system stays idle.
+
+If drawdown occurs, YieldLoop shifts into defensive behavior:
+- tighter thresholds
+- lower trade frequency
+- reduced risk posture (USDT tilt where permitted)
+- pausing if hard thresholds trigger
+
+A bad month does not mean failure.
+It means the system prioritized survival over gambling.
+
+---
+
 ### 9.2 Trade Quality Gate (Primary Safety Layer)
 
 The Trade Quality Gate is the single most important safety engine.
@@ -1382,7 +1403,7 @@ volatility is where slippage and MEV become lethal.
 
 ### 9.7 Drawdown Protection
 
-YieldLoop implements drawdown controls at the vault level.
+YieldLoop implements drawdown controls at the vault level using a defined reference point (e.g., high-water mark or starting principal) and protocol-set thresholds.
 
 Two layers:
 
@@ -1515,6 +1536,24 @@ This prevents:
 - fee mischarges
 - reward inflation
 - disputes over “paper gains”
+
+---
+
+### 10.1.1 Unrealized vs Realized (Why Your Vault Can Look Down Without Any “Loss” Being Final)
+
+Vault value can fluctuate while positions are open.
+This is **unrealized** movement.
+
+Key rules:
+- unrealized gains are not treated as profit
+- unrealized losses are not treated as realized loss until a position closes or is unwound
+- realized profit (and performance fees) only occur on closeout events
+
+This is why YieldLoop can show:
+- no realized profit for a period of time, and/or
+- temporary drawdown while waiting for safe exits
+
+This is intentional and is required for honest accounting.
 
 ---
 
@@ -1663,12 +1702,27 @@ This structure makes YieldLoop auditable, fair, and survivable.
 
 ---
 
-## 11. LOOP Rewards System (Monthly Distribution + Claim Rules)
+### 11.0 LOOP Positioning (Optional Profit Settlement, Not Yield)
 
-LOOP is an optional profit payout asset. It is designed to reward users who align with the long-term protocol incentive structure rather than extracting profits immediately in USDT.
+LOOP is an optional **profit settlement** asset that a user can choose instead of USDT profit withdrawals.
+Users are never forced into LOOP.
 
-LOOP rewards are not based on hype.
-They are based on closed-profit performance and are issued under deterministic monthly rules.
+LOOP does not represent:
+- ownership
+- dividends
+- governance rights
+- guaranteed returns
+- “yield” or emissions
+
+LOOP exists to offer an alternative profit settlement path that aligns long-term users with protocol sustainability mechanics.
+
+---
+
+#### 11.0.1 LOOP Is Not Yield
+
+YieldLoop profits come from execution outcomes (spread capture + PCS↔BiSwap arbitrage when profitable after all costs).
+LOOP does not create profit.
+LOOP is simply one optional way to receive a portion of **realized closed-profit outcomes** under a monthly claim schedule.
 
 ---
 
@@ -1827,6 +1881,26 @@ This fee applies only when:
 
 If no profit is realized:
 - no fee is charged
+- fees are not charged on losses or negative performance outcomes
+
+---
+
+### 12.1.1 Fee Philosophy (What Users Are Actually Paying For)
+
+YieldLoop charges a performance fee because execution systems are not free.
+
+The fee pays for:
+- protocol continuity (Dev/Ops + monitoring + execution support)
+- growth and onboarding (Marketing + partnerships)
+- long-term resiliency (Ratcheting Stability Reserve)
+- structured innovation (LoopLabs)
+
+YieldLoop does not charge fees on deposits or principal.
+It charges fees only on realized profit events.
+
+If no realized profit occurs:
+- no performance fee is charged
+- the protocol does not “take a cut” of user capital
 
 ---
 
@@ -1845,6 +1919,18 @@ The reduced fee for LOOP payout exists because LOOP payout:
 - aligns users with protocol incentives
 - supports token utility adoption
 - reduces constant sell behavior
+
+---
+
+### 12.2.1 Why LOOP Has a Lower Fee
+
+YieldLoop offers a lower performance fee when users elect LOOP payout because LOOP payout:
+- is settled monthly (not instantly extracted)
+- reduces immediate sell pressure relative to constant USDT withdrawals
+- supports protocol sustainability through aligned incentives
+
+The lower fee is not a promise of higher returns.
+It is a settlement option with different user behavior and system impact.
 
 ---
 
