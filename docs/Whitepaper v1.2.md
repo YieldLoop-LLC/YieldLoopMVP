@@ -176,10 +176,14 @@ Users configure each vault by selecting:
 - YieldLoop operates continuously in monitoring, and executes opportunistically (bounded by guardrails).
 - Profits are produced only when trades close.
 - Realized profits can be withdrawn at any time in USDT (if USDT payout is selected).
-- If LOOP payout is selected:
-  - realized profits are held in suspense
-  - LOOP rewards are calculated and distributed monthly (calendar month)
-  - LOOP becomes claimable after monthly settlement
+If LOOP payout is selected:
+- realized profits are held in suspense (USDT)
+- at monthly settlement, equivalent LOOP is minted 1:1 against suspense USDT
+- minted LOOP represents a receipt claim on USDT held inside the LOOP Redemption Pool
+- LOOP may be redeemed for USDT at any time after mint
+
+Monthly settlement only controls the timing of LOOP minting.
+Redemption is not restricted to monthly windows.
 
 ### 1.4 Fee Model (Performance Fee Only)
 
