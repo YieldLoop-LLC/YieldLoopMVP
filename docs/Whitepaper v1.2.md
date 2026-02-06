@@ -63,7 +63,7 @@
 8. Strategy Logic (Arbitrage + Profit Capture Rules)  
 9. Guardrails, Safety Systems, and Failsafes  
 10. Profit Settlement, Compounding, and Withdrawals  
-11. LOOP Rewards System (Monthly Distribution + Claim Rules)  
+11. LOOP Receipt Token System (Monthly Mint + Redemption Rules)
 12. Fee Model and Fee Routing  
 13. Ratcheting Stability Reserve System (“Ratchet Engine”)  
 14. Vault Lifecycle State Machine  
@@ -107,7 +107,20 @@ Blockchain systems carry inherent risks including:
 Audits, testing, and conservative guardrails may reduce risk but cannot eliminate risk.
 
 ### 0.4 LOOP Token Risk
-LOOP is an optional reward payout asset. Users may elect to receive profits in LOOP on a monthly distribution schedule. LOOP value is market-driven and may fluctuate significantly. YieldLoop does not guarantee that LOOP will retain value, rise in value, or remain liquid.
+
+LOOP represents a receipt claim on USDT held inside the LOOP Redemption Pool.
+
+LOOP is minted only when realized net trading profit is allocated to LOOP payout mode.
+LOOP is burned when redeemed for USDT.
+LOOP cannot be minted without realized profit.
+LOOP has no scheduled emissions.
+LOOP has no inflation schedule.
+
+1 LOOP is intended to redeem for 1 USDT through protocol redemption.
+
+LOOP does not represent equity, ownership, governance rights, or revenue share.
+
+Secondary market pricing (if enabled in future versions) may deviate from redemption value, but protocol redemption remains fixed at 1 LOOP = 1 USDT.
 
 ### 0.5 Fees and System Routing
 YieldLoop charges performance fees only on realized profits. Fees are routed to operational categories and system reserve mechanisms as defined in this document. Users acknowledge that these allocations do not create ownership rights, dividends, or guaranteed returns.
@@ -1708,6 +1721,8 @@ This structure makes YieldLoop auditable, fair, and survivable.
 
 ---
 
+## 11. LOOP Receipt Token System (Monthly Mint + Redemption Rules)
+
 ### 11.0 LOOP Positioning (Optional Profit Settlement, Not Yield)
 
 LOOP is an optional **profit settlement** asset that a user can choose instead of USDT profit withdrawals.
@@ -1734,21 +1749,29 @@ LOOP is simply one optional way to receive a portion of **realized closed-profit
 
 ### 11.1 What LOOP Is
 
-LOOP is a protocol reward asset that may be chosen as a vault’s profit payout method.
+LOOP is a receipt / redemption token that may be chosen as a vault’s profit payout method.
+
+LOOP is minted only when realized net trading profit is allocated to LOOP payout mode.
+LOOP is burned when redeemed for USDT.
+LOOP cannot be minted without realized profit.
+LOOP has no emissions schedule.
 
 Key characteristics:
 - optional payout selection (not mandatory)
-- tied to realized vault performance
-- distributed on a monthly calendar schedule
+- tied strictly to realized closed-vault profit
+- minted during monthly settlement
+- redeemable for USDT through protocol redemption
 - claimable by the user to their wallet
 
 LOOP is not:
-- a guaranteed return product
+- yield
+- an emission reward
 - a dividend
 - a share of YieldLoop
 - a promise of price increases
+- ownership or governance
 
-LOOP value is market-driven and can rise or fall.
+LOOP represents a claim on USDT held inside the LOOP Redemption Pool.
 
 ---
 
