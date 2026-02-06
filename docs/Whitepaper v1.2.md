@@ -1721,171 +1721,148 @@ This structure makes YieldLoop auditable, fair, and survivable.
 
 ---
 
-## 11. LOOP Receipt Token System (Monthly Mint + Redemption Rules)
+## 11. LOOP Redemption Token (Receipt Token Model)
 
-### 11.0 LOOP Positioning (Optional Profit Settlement, Not Yield)
-
-LOOP is an optional **profit settlement** asset that a user can choose instead of USDT profit withdrawals.
-Users are never forced into LOOP.
-
-LOOP does not represent:
-- ownership
-- dividends
-- governance rights
-- guaranteed returns
-- “yield” or emissions
-
-LOOP exists to offer an alternative profit settlement path that aligns long-term users with protocol sustainability mechanics.
-
----
-
-#### 11.0.1 LOOP Is Not Yield
-
-YieldLoop profits come from execution outcomes (spread capture + PCS↔BiSwap arbitrage when profitable after all costs).
-LOOP does not create profit.
-LOOP is simply one optional way to receive a portion of **realized closed-profit outcomes** under a monthly claim schedule.
-
----
-
-### 11.1 What LOOP Is
-
-LOOP is a receipt / redemption token that may be chosen as a vault’s profit payout method.
-
-LOOP is minted only when realized net trading profit is allocated to LOOP payout mode.
-LOOP is burned when redeemed for USDT.
-LOOP cannot be minted without realized profit.
-LOOP has no emissions schedule.
-
-Key characteristics:
-- optional payout selection (not mandatory)
-- tied strictly to realized closed-vault profit
-- minted during monthly settlement
-- redeemable for USDT through protocol redemption
-- claimable by the user to their wallet
+LOOP is an optional **profit receipt and redemption token** representing a claim on realized
+net trading profit allocated to LOOP payout mode.
 
 LOOP is not:
-- yield
-- an emission reward
-- a dividend
-- a share of YieldLoop
-- a promise of price increases
-- ownership or governance
+- an emission token
+- a yield token
+- an inflationary reward token
+- a governance token
+- a dividend token
+- a representation of protocol ownership
 
-LOOP represents a claim on USDT held inside the LOOP Redemption Pool.
-
----
-
-### 11.2 Why LOOP Exists
-
-LOOP exists to create:
-- long-term alignment with protocol stability
-- reduced short-term sell pressure from reward cycles
-- a smoother distribution cadence (monthly)
-- improved sustainability relative to continuous emissions models
-
-LOOP also supports:
-- incentive alignment with the Ratcheting Stability Reserve System
-- stronger long-term token integrity vs inflationary reward designs
+LOOP exists solely as an accounting receipt for user-earned profit that remains redeemable
+for USDT through the protocol.
 
 ---
 
-### 11.3 LOOP Payout Mode (How It Works)
+### 11.1 Core Definition
 
-When a vault is configured for LOOP payout:
+LOOP is a **mint-and-burn receipt token**:
 
-1) trades execute normally under guardrails
-2) realized profit is computed only upon position close
-3) performance fee is deducted (10% rate in LOOP mode)
-4) remaining profit is routed according to compound settings
-5) the profit intended for payout is not paid instantly
-6) instead it is credited into:
-   - **Suspense Profit Balance**
+- LOOP is minted only when realized net trading profit is allocated to LOOP payout mode.
+- LOOP is burned when redeemed for USDT.
+- LOOP cannot be minted without realized profit.
+- LOOP has no scheduled emissions.
+- LOOP has no block-based issuance.
+- LOOP has no inflation schedule.
 
-Suspense Profit represents closed profit approved for monthly LOOP settlement.
-
----
-
-### 11.4 Monthly Settlement Window (Calendar Month)
-
-LOOP rewards are calculated monthly using a calendar month cutoff.
-
-At month-end:
-- all suspense profit accumulated from closed trades within that month is finalized
-- the finalized amount becomes eligible for LOOP reward processing
-
-Monthly settlement exists to:
-- reduce reward emission chaos
-- reduce exploit surface from rapid claim cycles
-- simplify accounting and reporting
-- ensure reward issuance is based on confirmed results
+If no realized profit exists, **no LOOP is minted**.
 
 ---
 
-### 11.5 LOOP Reward Calculation (Deterministic)
+### 11.2 LOOP Redemption Pool
 
-LOOP issuance is based on:
+YieldLoop maintains a dedicated on-chain **LOOP Redemption Pool** denominated in USDT.
 
-- realized closed profits attributed to the vault during the month
-- the vault’s compounding preference
-- application of the LOOP-mode performance fee (10%)
-- protocol-defined conversion/issuance rules
+#### Funding Source
 
-LOOP rewards are never calculated from:
-- unrealized gains
-- open position value
-- estimated profit
-- speculative “APY”
+The LOOP Redemption Pool is funded exclusively by:
+
+- Net realized trading profit allocated to LOOP payout mode.
+
+No other source may be treated as primary backing.
 
 ---
 
-### 11.6 Claim Process
+### 11.3 Minting Rule (Hard Lock)
 
-After month-end settlement:
+When a trade cycle closes and produces realized profit:
 
-- claimable LOOP becomes visible in the vault dashboard
-- the user may claim LOOP at any time (subject to protocol-defined claim window and gas costs)
-- claiming delivers LOOP to the user wallet
+1. Performance fee is deducted.
+2. If the user selected LOOP payout mode:
+   - Net profit USDT is transferred into the LOOP Redemption Pool.
+   - An equal amount of LOOP is minted to the user.
 
-YieldLoop does not auto-send LOOP in v1.2.
-Rewards are claim-based to:
-- reduce wasteful spam distribution
-- allow users to claim when desired
-- keep execution cost contained
+**Minted LOOP = Net Profit USDT**
 
----
+Minting is rejected unless all conditions are true:
 
-### 11.7 Unclaimed Rewards
-
-If the user does not claim LOOP immediately:
-- rewards remain claimable under protocol rules
-- unclaimed LOOP is not treated as forfeited unless explicitly defined by governance rules
-
-YieldLoop is designed to avoid punitive mechanics.
+- Trade closed
+- Realized gross profit > 0
+- Performance fee deducted
+- Vault configured for LOOP payout
 
 ---
 
-### 11.8 Safety and Integrity Rules
+### 11.4 Redemption Rule
 
-LOOP reward rules include:
+When a user redeems LOOP:
 
-- rewards cannot exceed validated suspense profit amounts
-- suspense profit is ledger-separated from withdrawable USDT profit
-- reward calculations are deterministic and auditable
-- claim cannot occur during settlement execution
-- rewards cannot be “double claimed”
+1. LOOP is burned.
+2. Equivalent USDT amount is transferred from the LOOP Redemption Pool to the user wallet.
+
+Redemption rate:
+
+**1 LOOP = 1 USDT**
+
+---
+
+### 11.5 Solvency Invariant
+
+At all times:
+
+**Total LOOP supply ≤ USDT balance of LOOP Redemption Pool**
+
+This invariant must be enforced at the contract level.
+
+---
+
+### 11.6 Ratchet Stability Reserve Interaction
+
+The Ratcheting Stability Reserve:
+
+- May optionally top-up the LOOP Redemption Pool.
+- May never be the primary backing source.
+- May never be drained to zero to support LOOP redemptions.
+- Cannot be used to mint LOOP.
+
+The Ratchet system functions only as supplemental resilience, not LOOP backing.
+
+---
+
+### 11.7 No Market-Buy LOOP in v1
+
+YieldLoop v1 does **not**:
+
+- Buy LOOP from DEX markets for reward distribution.
+- Run LOOP farming.
+- Run LOOP emissions.
+- Run inflation schedules.
+
+All LOOP issuance occurs only through minting against realized profit.
+
+---
+
+### 11.8 No Profit Guarantees
+
+LOOP represents a claim on profit that has already occurred.
+
+LOOP does not:
+
+- guarantee future profits
+- guarantee system profitability
+- guarantee price appreciation
+- represent ownership of protocol revenue
+
+If YieldLoop produces no profit, LOOP issuance stops.
 
 ---
 
 ### 11.9 Summary
 
-LOOP rewards are designed to be:
-- performance-based (closed profit only)
-- monthly (calendar schedule)
-- deterministic (auditable accounting)
-- optional (user selects payout mode)
+LOOP is a boring, honest receipt token:
 
-This structure avoids the failure pattern of most DeFi reward tokens:
-constant emissions, constant dumping, eventual collapse.
+- Minted only from realized profit
+- Backed 1:1 by USDT
+- Redeemable anytime
+- No emissions
+- No hype mechanics
+
+Boring is survivable.
 
 ---
 
