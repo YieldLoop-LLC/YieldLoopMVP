@@ -3,7 +3,7 @@
 ## YieldLoop Performance Fee Addendum (AUM-Scaled)
 
 ### Purpose
-This addendum defines a **protocol-wide, AUM-scaled performance fee model** designed to:
+This addendum defines a protocol-wide, AUM-scaled performance fee model designed to:
 - reward scale and durability
 - align long-term users with protocol growth
 - reduce fees as operational efficiency improves
