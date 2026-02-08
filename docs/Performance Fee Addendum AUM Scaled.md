@@ -9,7 +9,7 @@ This addendum defines a protocol-wide, AUM-scaled performance fee model designed
 - reduce fees as operational efficiency improves
 - avoid fixed, permanent fee assumptions
 
-Fee adjustments are **deterministic**, **non-promissory**, and may move **up or down** as conditions change.
+Fee adjustments are deterministic, non-promissory, and may move up or down as conditions change.
 
 ---
 
