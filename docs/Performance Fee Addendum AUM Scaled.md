@@ -1,5 +1,3 @@
----
-
 ## YieldLoop Performance Fee Addendum AUM Scaled ##
 
 ### Purpose
