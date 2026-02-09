@@ -152,6 +152,10 @@ This keeps the core stable while allowing growth.
 
 ---
 
+###
+
+---
+
 ## Final Note
 
 YieldLoop is intentionally designed to feel different.
