@@ -2,45 +2,48 @@
 **Version:** v1.2  
 **Status:** Canonical / Source of Truth  
 **Audience:** Auditors, Core Developers, Reviewers  
-**Chain:** BNB Chain (v1.2)
+**Network:** BNB Chain (v1.2)
 
 ---
 
 ## 1. Purpose and Design Philosophy
 
-YieldLoop is an automated vault-based trading protocol designed to generate realized trading profit while avoiding common failure modes found in pooled, projection-based, or emission-driven DeFi systems.
+YieldLoop is an automated, vault-based trading protocol designed to generate **realized trading profit** while eliminating common DeFi failure modes such as pooled risk, mark-to-market accounting, reflexive emissions, and forced recovery behavior.
 
-The protocol is built on the following principles:
+The protocol is intentionally conservative.
 
-- **Realized profit only** — no mark-to-market profit credit
-- **Vault isolation** — no pooled user funds
-- **Deterministic execution** — behavior bound to state machines and approved strategies
-- **Fail-closed design** — when unsafe, the system stops
-- **No forced risk recovery** — losses are accepted, not hidden
-- **Optional receipt token (LOOP)** — representing realized profit only
+Core principles:
 
-YieldLoop prioritizes survivability and auditability over growth, leverage, or yield maximization.
+- Realized-profit-only accounting
+- Vault-level isolation (no pooled funds)
+- Deterministic execution via state machines
+- User-approved strategy execution only
+- Fail-closed behavior under unsafe conditions
+- Optional receipt token (LOOP) representing realized profit
+- No leverage, no emissions, no projected yield
+
+YieldLoop prioritizes durability, auditability, and honesty over growth or yield maximization.
 
 ---
 
 ## 2. Core System Invariants (Hard Rules)
 
-The following rules are **non-negotiable** and must be enforced at the smart contract level.
+The following invariants are **absolute** and must be enforced at the contract level:
 
 - User funds are never pooled
-- Vaults are isolated per user
-- Trading may only occur in explicitly permitted vault states
+- Each vault is isolated and independent
+- Trading may occur only in explicitly permitted states
 - Profit is credited only after settlement
 - Profit is always denominated in USDT
 - Performance fees apply only to realized profit
 - No fees are charged on losses
-- Principal may only be withdrawn after vault closeout
+- Principal may only be withdrawn after closeout
 - LOOP cannot be minted without realized profit
-- LOOP supply must always be solvent against its redemption pool
-- Governance and admin roles cannot seize user funds
+- LOOP must always be solvent against its redemption pool
+- Admins cannot seize, redirect, or reassign user funds
 - Emergency actions cannot alter accounting outcomes
 
-Any implementation violating these rules is considered protocol-breaking.
+Any implementation violating these rules is invalid.
 
 ---
 
@@ -48,39 +51,49 @@ Any implementation violating these rules is considered protocol-breaking.
 
 ### 3.1 Vault Structure
 
-Each YieldLoop vault is an independent smart contract instance with:
+Each YieldLoop vault is an independent on-chain instance with:
 
-- Single owner
-- Single base asset (whitelisted)
-- Independent ledger
-- Independent state machine
-- Independent execution lifecycle
+- A single owner
+- A single base asset
+- An isolated balance ledger
+- An isolated state machine
+- An isolated execution lifecycle
 
-There are **no shared balances**, **no pooled risk**, and **no cross-vault dependencies**.
+There are no shared balances, no pooled capital, and no cross-vault dependencies.
+
+---
 
 ### 3.2 Supported Assets (v1.2)
 
-Only the following BEP-20 assets may be used as vault base assets:
+Vaults may only be funded using the following BEP-20 assets:
 
-- BTCB
-- ETH
-- SOL
-- XRP
-- BNB
-- USDT
+- BTCB  
+- ETH  
+- SOL  
+- XRP  
+- BNB  
+- USDT  
 
 Any attempt to deposit or route through non-whitelisted assets must revert.
 
 ---
 
+### 3.3 Minimum Deposit
+
+- **Minimum deposit:** $250 USDT (or equivalent at deposit time)
+- Deposits below the minimum must revert
+- Minimum applies per vault, not per user
+
+---
+
 ## 4. Vault State Machine (Authoritative)
 
-Each vault exists in exactly one state at all times.
+Each vault exists in **exactly one state** at all times.
 
-### 4.1 State Enumeration
+### 4.1 Primary States
 
-| ID | State Name |
-|----|-----------|
+| ID | State |
+|----|------|
 | 0 | VAULT_CREATED |
 | 1 | DEPOSIT_PENDING |
 | 2 | FUNDED_IDLE |
@@ -99,15 +112,31 @@ Each vault exists in exactly one state at all times.
 
 ---
 
-### 4.2 Execution Permission Rule
+### 4.2 Emergency & Liveness Substates
 
-**Trades and swaps may only occur when vault.state ∈ { EXECUTING, CLOSE_PENDING }.**
+These are substates of `CLOSE_PENDING` or `PAUSED`:
 
-Any attempt to trade in any other state must revert.
+- CLOSE_PENDING_PARTIAL  
+- EMERGENCY_QUEUE_GAS  
+- EMERGENCY_QUEUE_INCLUSION  
+- EMERGENCY_QUEUE_ORACLE  
+- EMERGENCY_QUEUE_DEX  
+
+These substates do **not** permit trading.
 
 ---
 
-### 4.3 Valid State Transitions
+### 4.3 Execution Permission Rule
+
+Trades and swaps may occur **only** when:
+
+vault.state ∈ { EXECUTING, CLOSE_PENDING }
+
+All other states must revert trade attempts.
+
+---
+
+### 4.4 Valid State Transitions
 
 #### Deposit Flow
 - VAULT_CREATED → DEPOSIT_PENDING → FUNDED_IDLE
@@ -115,7 +144,7 @@ Any attempt to trade in any other state must revert.
 #### Strategy Flow
 - FUNDED_IDLE → STRATEGY_PROPOSED
 - STRATEGY_PROPOSED → STRATEGY_APPROVED
-- STRATEGY_PROPOSED → FUNDED_IDLE (rejected/expired)
+- STRATEGY_PROPOSED → FUNDED_IDLE (rejected or expired)
 
 #### Execution Flow
 - STRATEGY_APPROVED → EXECUTING
@@ -133,11 +162,11 @@ Any attempt to trade in any other state must revert.
 - CLOSE_REQUESTED → CLOSE_PENDING
 - CLOSE_PENDING → CLOSED
 
-#### Pause / Failure
+#### Failure / Pause
 - ANY → PAUSED
 - PAUSED → FUNDED_IDLE
 - ANY → ERROR_LOCK
-- ERROR_LOCK → FUNDED_IDLE (admin recovery)
+- ERROR_LOCK → FUNDED_IDLE (admin recovery only)
 
 Illegal transitions must revert.
 
@@ -147,22 +176,23 @@ Illegal transitions must revert.
 
 ### 5.1 Strategy Object
 
-All trading behavior is bound to a **Strategy Object** generated by the protocol and approved by the user.
+All execution behavior is bound to a **Strategy Object**, which defines:
 
-A strategy defines:
-
-- Strategy type (e.g. spread capture, DEX arbitrage)
+- Strategy type
 - Allowed venues
 - Routing constraints
 - Trade sizing rules
-- Slippage, impact, and liquidity thresholds
-- Execution limits
+- Slippage and price impact limits
+- Liquidity requirements
 - Oracle validation rules
+- Gas bounds
 - Expiration timestamp
 
-### 5.2 User Approval Requirement
+---
 
-- No strategy may execute without explicit user approval
+### 5.2 User Approval
+
+- Strategies must be explicitly approved by the vault owner
 - Strategies are hash-bound
 - Execution must revert if the approved hash does not match
 - Strategies expire automatically to prevent stale execution
@@ -173,39 +203,40 @@ A strategy defines:
 
 ### 6.1 Allowed Venues (v1.2)
 
-Execution is strictly limited to:
+Execution is limited to:
 
 - PancakeSwap
 - BiSwap
 
-No third venue routing is permitted.
+Routing to any other venue must revert.
 
-### 6.2 Trade Quality Gate
+---
 
-Trades may execute only if all conditions pass:
+### 6.2 Trade Quality Gates
+
+A trade may execute only if **all** conditions pass:
 
 - Expected net profit ≥ minimum threshold
 - Slippage ≤ max slippage
 - Price impact ≤ max impact
 - Pool liquidity ≥ minimum liquidity
-- Gas costs within buffer
+- Gas cost ≤ configured ceiling
 - Oracle price valid and fresh
 
-Failure of any condition results in trade rejection, not degradation.
+Failure of any gate causes the trade to be skipped, not degraded.
 
 ---
 
-## 7. Settlement and Profit Credit (High-Level)
+## 7. Settlement Overview
 
-Settlement is a deterministic phase following any completed trade cycle.
+Settlement occurs only after all positions are closed.
 
-- Profit is realized only after positions are closed
-- Profit is computed strictly from settlement balances
-- Unrealized P&L is never credited
+- Unrealized P&L is ignored
 - Losses reduce principal
-- No recovery trading is attempted
+- Profit is computed deterministically
+- Fees are assessed only on realized profit
 
-Detailed accounting rules are defined in **Document 2: Accounting & Value Integrity Specification**.
+Full settlement math is defined in **Document 2: Accounting & Value Integrity Specification**.
 
 ---
 
@@ -221,23 +252,30 @@ LOOP is:
 - Not speculative
 - Not required to use YieldLoop
 
+---
+
 ### 8.2 Minting Rules
 
-LOOP may be minted only when all of the following are true:
+LOOP may be minted only if:
 
 - A trade cycle has closed
-- Settlement has completed
+- Settlement is complete
 - Net realized profit exists
-- Performance fees have been deducted
-- User has selected LOOP payout mode
+- Performance fees are deducted
+- User selected LOOP payout mode
+- Equivalent USDT is deposited into the LOOP Redemption Pool
 
-LOOP is minted **1:1 against USDT** allocated to the LOOP Redemption Pool.
+Minting must be atomic and revert on failure.
 
-### 8.3 Burning and Redemption
+---
+
+### 8.3 Redemption and Burn
 
 - LOOP may be redeemed at any time
 - Redemption burns LOOP
-- Equivalent USDT is transferred from the Redemption Pool
+- USDT is paid 1:1 from the Redemption Pool
+
+---
 
 ### 8.4 Solvency Invariant
 
@@ -245,43 +283,71 @@ At all times:
 
 Total LOOP Supply ≤ LOOP Redemption Pool USDT Balance
 
-Any action violating this invariant must revert.
+Violation must revert.
 
 ---
 
-## 9. Failure Modes and Emergency Behavior
+## 9. Emergency Withdrawal and Liveness Handling
 
-YieldLoop is designed to **fail closed**, not fail open.
+### 9.1 Emergency Withdrawal Rules
 
-### 9.1 General Rule
+- Emergency withdrawals are **USDT-only**
+- LOOP payout preference is ignored
+- Positions may be closed “as-is”
+- Losses may occur
+- Performance fees still apply if profit exists
 
-When unsafe:
-- Trading stops
-- Accounting freezes
-- Withdrawals remain available where safe
+---
 
-### 9.2 Failure Triggers
+### 9.2 Soft Emergency (Per Vault)
 
-- Oracle stale or invalid
-- Excessive slippage
-- Liquidity collapse
-- Repeated transaction failures
-- DEX outage
-- Gas price spikes
-- Admin emergency pause
+- User requests emergency withdrawal
+- Vault enters CLOSE_REQUESTED → CLOSE_PENDING
+- System attempts orderly unwind
+- Partial closeouts permitted
+- Dust below $0.50 USDT must not block closure
 
-### 9.3 Emergency Actions
+---
+
+### 9.3 Hard Emergency (Global)
+
+If a global emergency flag is set:
+
+- Trading is disabled
+- New deposits are disabled
+- Emergency withdrawals enter FIFO queue
+- Execution occurs sequentially
+- No reordering permitted
+
+---
+
+### 9.4 Liveness Queues
+
+Vaults may enter liveness substates due to:
+
+- Gas spikes
+- Transaction inclusion failures
+- Oracle invalidation
+- DEX routing failure
+
+Vaults remain queued until conditions normalize or admin intervention occurs.
+
+---
+
+### 9.5 Admin Emergency Powers
 
 Admins may immediately:
+
 - Pause trading
-- Pause new deposits
-- Trigger kill switch
+- Pause deposits
+- Trigger global kill switch
 
 Admins may **never**:
+
 - Move user funds
+- Change accounting outcomes
 - Mint LOOP
-- Change accounting
-- Override settlement outcomes
+- Bypass settlement rules
 
 ---
 
@@ -291,14 +357,24 @@ Admins may **never**:
 
 - Multisignature Admin Council
 - Timelocked execution for sensitive actions
-- No on-chain token voting in v1.2
+- No token-based voting in v1.2
+
+---
 
 ### 10.2 Timelock
 
 - Minimum delay: 72 hours
 - Recommended delay: 96 hours
 
-All sensitive actions must be queued and observable.
+Actions requiring timelock include:
+
+- Fee adjustments (within bounds)
+- Strategy enable/disable
+- Guardrail changes
+- Contract upgrades
+- Pause / resume actions
+
+---
 
 ### 10.3 Immutable Invariants
 
@@ -307,9 +383,9 @@ The following cannot be changed by governance or upgrade:
 - Realized-profit-only accounting
 - LOOP mint/burn rules
 - Redemption pool solvency
-- No forced liquidation
-- No fees on losses
 - Vault isolation
+- No fees on losses
+- No forced liquidation
 
 ---
 
@@ -317,10 +393,10 @@ The following cannot be changed by governance or upgrade:
 
 YieldLoop assumes:
 
-- Smart contracts may contain bugs
+- Smart contracts may fail
 - Markets may behave adversarially
-- Oracles may fail
-- Execution may be front-run
+- Oracles may become unavailable
+- Transactions may be censored or delayed
 
 The protocol responds by **stopping**, not compensating.
 
@@ -330,9 +406,9 @@ YieldLoop makes no guarantees of profit.
 
 ## 12. Canonical Authority Statement
 
-This document is the **authoritative definition** of YieldLoop protocol behavior.
+This document defines the **authoritative behavior** of the YieldLoop protocol.
 
-If any other document conflicts with this specification, **this document prevails**.
+If any other document, UI, or explanation conflicts with this specification, **this document prevails**.
 
 ---
 
