@@ -1,312 +1,331 @@
-# YieldLoop — Core Whitepaper  
-## System Specification (Canonical)
+# YieldLoop  
+## Core Whitepaper — System Specification
 
 **Author:** Todd Koletsky  
 **Date:** February 9, 2026  
-**Status:** Canonical Source of Truth  
+**Document Role:** Normative / Canonical  
 
 ---
 
-## 0. Purpose and Authority
+## 1. Purpose
 
-This document defines **what YieldLoop is**, mechanically and unambiguously.
+This document defines the **canonical behavior** of the YieldLoop system.
 
-If there is any conflict between:
-- marketing material
-- a prospectus
-- a dashboard label
-- a community explanation
-- a social post
-- a prior draft
-
-**This document governs.**
-
-This document is:
-- normative
-- build-authoritative
-- audit-authoritative
-
-All other YieldLoop documents must be consistent with it or explicitly defer to it.
-
----
-
-## 1. System Overview
-
-YieldLoop is a **non-custodial, automated trading system** built around **isolated user vaults** and **cycle-based execution**.
-
-Core design principles:
-- One user → one vault
-- No pooled user funds
-- No socialized losses
-- Explicit execution boundaries
-- Explicit settlement events
-- User-controlled exits
-
-YieldLoop does not guarantee profit, yield, or capital preservation.
-
----
-
-## 2. Custody and Ownership Model
-
-- Users retain ownership of their funds at all times.
-- Funds are held on-chain in protocol-controlled contracts.
-- YieldLoop does not custody user funds off-chain.
-- YieldLoop does not rehypothecate user assets.
-- YieldLoop does not use user assets to collateralize other users.
-
-Each vault is logically and accounting-isolated.
-
----
-
-## 3. Vault Architecture
-
-### 3.1 Vault Definition
-
-A **vault** is a protocol-controlled container that:
-- Is associated with a single user wallet
-- Holds only that user’s assets
-- Executes independently
-- Settles independently
-
-Vaults do not share:
-- balances
-- margin
-- collateral
-- execution state
-
----
-
-### 3.2 Vault Invariants
-
-The following invariants must always hold:
-
-- A vault can only execute strategies approved by its owner.
-- A vault cannot assume liabilities created by other vaults.
-- A vault’s losses are bounded to its own balance.
-- A vault may exist in only one lifecycle state at a time.
-
----
-
-## 4. Supported Assets
-
-- YieldLoop supports a defined set of approved assets.
-- Asset eligibility is determined by governance or system configuration.
-- Unsupported assets cannot be deposited or traded.
-
-Asset support does not imply:
-- price stability
-- liquidity guarantees
-- execution guarantees
-
----
-
-## 5. Deposit Rules
-
-### 5.1 Initial Deposit
-
-- A wallet’s first deposit into YieldLoop must be **≥ $1,000** (or equivalent).
-- This establishes the initial vault.
-
-### 5.2 Subsequent Deposits
-
-- Subsequent deposits into an existing vault must be **≥ $100**.
-- Subsequent deposits do not reset cycle state unless explicitly configured.
-
-Deposits:
-- are user-initiated
-- are not pooled
-- do not guarantee immediate execution
-
----
-
-## 6. Strategy Proposal and Approval
-
-### 6.1 Strategy Proposal
-
-Before execution begins, the system generates a **strategy proposal** describing:
-- strategy category
-- expected behavior
+It specifies:
+- system structure
+- vault model
 - execution constraints
-- risk characteristics
+- cycle mechanics
+- settlement rules
+- safety guarantees
 
-Strategy proposals do **not** include:
-- profit projections
-- APY estimates
-- performance guarantees
+This document is **authoritative**.  
+All other documents are explanatory, derivative, or additive.
 
----
-
-### 6.2 User Approval
-
-Execution requires explicit user approval:
-- Approval is wallet-signed
-- Approval is vault-specific
-- Approval is cycle-specific
-
-Without approval:
-- no strategy executes
-- the vault remains idle
+If any external description conflicts with this document, **this document governs**.
 
 ---
 
-## 7. Execution Model (High-Level)
+## 2. System Overview
 
-- Execution occurs only within an active cycle.
-- Execution is opportunistic, not continuous.
-- The system may execute zero trades during a cycle.
-- Execution may pause or abort if guardrails are violated.
+YieldLoop is an automated trading system built on:
+- isolated user vaults
+- fixed execution cycles
+- deterministic settlement
+- explicit exit paths
 
-Execution behavior is bounded by:
-- liquidity constraints
+The system does not pool user funds, socialize losses, or rely on reflexive dynamics.
+
+---
+
+## 3. Vault Model
+
+### 3.1 Vault Isolation
+
+Each user interacts with a **dedicated vault**.
+
+A vault:
+- holds only one user’s assets
+- maintains independent accounting
+- cannot access other vaults
+- cannot be accessed by other vaults
+
+There is no shared balance, margin, or liquidity layer.
+
+---
+
+### 3.2 Vault Capabilities
+
+A vault may:
+- accept deposits
+- approve strategies
+- authorize execution
+- settle positions
+- process withdrawals
+
+A vault may not:
+- initiate execution independently
+- bypass control logic
+- alter global parameters
+
+---
+
+## 4. Vault Control (Brains)
+
+Each vault is governed by a **Vault Brain**.
+
+The Vault Brain:
+- enforces lifecycle state
+- validates user approvals
+- authorizes execution
+- enforces guardrails
+- coordinates settlement
+
+The Vault Brain does not:
+- execute trades
+- hold assets
+- set economic policy
+
+---
+
+## 5. Lifecycle States
+
+Each vault operates under a deterministic state machine:
+
+- `IDLE`
+- `READY`
+- `ACTIVE`
+- `SETTLING`
+- `SETTLED`
+- `EMERGENCY`
+
+State transitions are:
+- explicit
+- logged
+- non-reentrant
+
+Invalid transitions revert.
+
+---
+
+## 6. Cycles
+
+### 6.1 Cycle Definition
+
+YieldLoop operates in **fixed-duration cycles**.
+
+A cycle:
+- defines execution windows
+- bounds risk exposure
+- enforces accounting finality
+
+No vault may participate in more than one cycle simultaneously.
+
+---
+
+### 6.2 Cycle Events
+
+Each cycle includes:
+- activation
+- execution window
+- closure
+- settlement
+
+Execution outside an active cycle is prohibited.
+
+---
+
+## 7. Execution Model
+
+### 7.1 Execution Authorization
+
+Execution may occur only when:
+- the vault is in `ACTIVE` state
+- the strategy is approved
+- guardrails are satisfied
+
+Execution engines are **stateless** and **permissioned**.
+
+---
+
+### 7.2 Execution Characteristics
+
+Execution is:
+- opportunistic
+- conditional
+- abortable
+- non-continuous
+
+The absence of execution is a valid outcome.
+
+---
+
+## 8. Strategies
+
+Strategies are defined as:
+- permitted action sets
+- constraints
+- exit conditions
+
+Strategies do not:
+- guarantee profit
+- imply execution frequency
+- bypass guardrails
+
+---
+
+## 9. Market Interaction
+
+External market inputs (DEXs, oracles, feeds) are treated as:
+- untrusted
+- bounded
+- validated
+
+All interactions are subject to:
 - slippage limits
+- liquidity checks
+- price sanity bounds
 - gas constraints
-- safety checks
+
+Failure of any check aborts execution without state mutation.
 
 ---
 
-## 8. Cycle Mechanics
+## 10. Settlement
 
-### 8.1 Cycle Definition
+### 10.1 Settlement Trigger
 
-A **cycle** is a fixed execution window with:
-- a defined start
-- a defined end
-- a single settlement event
-
-Cycles exist to:
-- bound risk
-- enforce accounting
-- create explicit exit points
+Settlement occurs:
+- at cycle end
+- upon emergency exit
+- upon explicit close conditions
 
 ---
 
-### 8.2 Cycle States
-
-A vault may exist in one of the following cycle states:
-- Idle
-- Active
-- Settling
-- Settled
-- Emergency
-
-State transitions are explicit and logged.
-
----
-
-## 9. Settlement and Accounting
+### 10.2 Settlement Rules
 
 At settlement:
-- All open positions are closed or marked
-- Profit or loss is realized
-- Performance fees (if applicable) are calculated
-- Incentives (if applicable) are applied
+- all positions are closed or marked
+- realized P/L is finalized
+- performance fees (if any) are applied
+- settlement output is selected
 
 Settlement is:
-- atomic
-- final
-- non-reversible
+- atomic per vault
+- deterministic
+- irreversible
 
 ---
 
-## 10. Profit, Loss, and Fees (Existence Only)
+## 11. Fees
 
-- Profit and loss are determined per vault.
-- Losses are never socialized.
-- Performance fees apply **only to realized profit**.
-- If no profit exists, no performance fee is charged.
+YieldLoop charges **performance fees only**.
 
-Fee rates, discounts, and incentive programs are defined in a separate document.
+- Fees apply only to realized profit
+- No profit → no fee
+- Fees are calculated at settlement
 
----
-
-## 11. Redemption Paths
-
-At settlement, users may choose among available redemption paths, including:
-- direct stablecoin withdrawal
-- optional protocol receipt mechanisms
-
-Redemption paths:
-- are optional
-- are explicitly selected
-- do not affect vault ownership
-
-No redemption path is mandatory.
+Fee rates and allocations are defined in the **Performance Fee Addendum**.
 
 ---
 
-## 12. Emergency States and Liveness
+## 12. Settlement Outputs
 
-### 12.1 Emergency Conditions
+Users may select:
+- stablecoin settlement
+- LOOP settlement (optional)
 
-The system may enter an emergency state due to:
-- execution failures
-- market dislocations
-- oracle failures
-- security concerns
+Settlement selection does not alter:
+- execution behavior
+- fee calculation
+- vault rules
 
 ---
 
-### 12.2 Emergency Behavior
+## 13. LOOP (System Receipt Mechanism)
 
-In an emergency state:
-- new execution may be halted
+LOOP is an optional receipt mechanism representing a claim on realized system value.
+
+LOOP:
+- is backed by realized profit
+- is governed by a ratcheting floor
+- does not dilute retroactively
+- is not required to use the system
+
+Detailed mechanics are defined in the **LOOP Redemption Model**.
+
+---
+
+## 14. Safety and Emergency Handling
+
+### 14.1 Emergency Conditions
+
+Emergency states may be triggered by:
+- execution failure
+- oracle failure
+- market anomalies
+- governance intervention
+
+---
+
+### 14.2 Emergency Behavior
+
+In emergency:
+- execution is disabled
 - deposits may be paused
-- users retain the ability to request exits
+- withdrawals remain available
+- conservative unwinds are attempted
 
-Emergency exits prioritize:
+The system prioritizes:
 - access
 - determinism
-- clarity
-
-Not price optimization.
+- containment
 
 ---
 
-## 13. Liveness Guarantees
+## 15. Liveness Guarantees
 
-YieldLoop guarantees:
-- users can always request an exit
-- vaults cannot be trapped indefinitely
-- emergency states are explicit
+The system is designed to:
+- fail closed
+- preserve exit paths
+- avoid deadlock
+- prevent permanent fund lockup
 
-The system favors **exit over optimization**.
-
----
-
-## 14. System Non-Goals (Explicit)
-
-YieldLoop does **not**:
-- guarantee yield
-- guarantee capital preservation
-- pool user funds
-- hide risk behind projections
-- optimize for constant activity
-- require token participation
+No component may require discretionary intervention to allow exit.
 
 ---
 
-## 15. Change Control
+## 16. Governance and Change Control
 
-This document may be modified only by:
-- explicit versioned updates, or
+System changes occur via:
+- governance
+- timelocked updates
 - formal addenda
 
-Silent modification is not permitted.
+Silent or retroactive changes are prohibited.
 
 ---
 
-## 16. Summary
+## 17. Non-Goals
+
+YieldLoop does not:
+- guarantee returns
+- provide capital protection
+- optimize for maximum activity
+- rely on user behavior for stability
+
+---
+
+## 18. Summary
 
 YieldLoop is defined by:
-- isolation
-- explicit consent
+- isolated vaults
+- explicit authorization
 - bounded execution
 - deterministic settlement
-- user-controlled exits
+- guaranteed exits
 
 This document defines **what the system is**.
-
-All other documents exist to explain, contextualize, or extend it.
 
 ---
 
