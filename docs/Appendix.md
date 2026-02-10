@@ -144,36 +144,64 @@ This appendix defines the **exact default parameter values** required to impleme
 
 ---
 
-## A.9 LOOP Rewards System (v1.2 Implementation Lock)
+## A.9 LOOP Receipt Token System (v1.2 Implementation Lock)
 
-### A.9.1 LOOP Source of Rewards (MANDATORY)
+### A.9.1 LOOP Core Definition (Hard Lock)
 
-**Hard Lock:** LOOP is **NOT minted** in v1.2 MVP.  
-LOOP rewards are funded by **using suspense profit USDT to buy LOOP on-market**, then distributing.
+LOOP is a **mint-and-burn receipt token** representing a claim on realized trading profit
+allocated to LOOP payout mode.
 
-| Parameter | Type | Default |
-|---|---:|---:|
-| loopRewardSource | string | "MARKET_BUY_WITH_SUSPENSE_USDT" |
-| loopMintingAllowed | bool | false |
-| loopRewardTreasuryAllowed | bool | false |
+Hard rules:
+- LOOP is minted **only** when realized net trading profit exists.
+- LOOP is burned **only** when redeemed for USDT.
+- LOOP cannot be minted without realized profit.
+- LOOP has no emissions, schedules, or inflation.
+- LOOP cannot be minted by admin, governance, or upgrade logic.
 
-### A.9.2 LOOP Buy Settings
+If no realized profit exists, **no LOOP is minted**.
 
-| Parameter | Type | Default | Notes |
-|---|---:|---:|---|
-| loopBuyMaxSlippageBps | uint16 | 75 | 0.75% |
-| loopBuyMaxHops | uint8 | 2 | Simple routing |
-| loopBuyAllowedDexVenues | set<string> | {PCS, BISWAP} | Must be best execution |
+---
 
-### A.9.3 LOOP Reward Distribution (Monthly)
+### A.9.2 LOOP Redemption Pool (USDT-Backed)
 
-| Parameter | Type | Default |
-|---|---:|---:|
-| loopSettlementTimezone | string | "UTC" |
-| loopDistributionDayOfMonth | uint8 | 1 |
-| loopDistributionHourUTC | uint8 | 0 |
-| loopDistributionMinuteUTC | uint8 | 0 |
-| loopClaimWindowDays | uint16 | 365 | Claims valid for 1 year |
+YieldLoop maintains a dedicated **LOOP Redemption Pool** denominated in USDT.
+
+Rules:
+- The redemption pool is funded exclusively by realized net trading profit
+  allocated to LOOP payout mode.
+- 1 LOOP represents a claim on **1 USDT** in the redemption pool.
+- Total LOOP supply must never exceed the USDT balance of the redemption pool.
+
+Invariant (must be enforced at contract level):
+
+Total LOOP Supply ≤ LOOP Redemption Pool USDT Balance
+
+---
+
+### A.9.3 Minting and Redemption Rules (Non-Negotiable)
+
+Minting:
+- Occurs only at trade-cycle settlement.
+- Occurs only after performance fees are deducted.
+- Occurs only if the user selected LOOP payout mode.
+
+Redemption:
+- LOOP may be redeemed at any time, subject to pool liquidity.
+- Redeeming LOOP burns the token and transfers equivalent USDT.
+- Redemption rate is fixed: **1 LOOP = 1 USDT**.
+
+---
+
+### A.9.4 Explicitly Disallowed (v1.2)
+
+The protocol must NOT:
+- Market-buy LOOP for rewards.
+- Emit LOOP on a schedule.
+- Farm or stake LOOP.
+- Use reserves as primary LOOP backing.
+- Mint LOOP without realized profit.
+
+Any violation of these rules is a protocol-breaking error.
 
 ---
 
