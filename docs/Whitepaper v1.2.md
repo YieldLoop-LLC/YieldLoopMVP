@@ -21,6 +21,12 @@ After a vault is created, additional deposits may be made subject to the followi
 - Basic Genesis NFT holders: **$175**
 - Lifetime Genesis NFT holders: **$100**
 
+Genesis Pass NFTs do not reduce the initial vault creation minimum.
+They may reduce minimums for subsequent deposits only, as a usability benefit.
+
+These reductions affect deposit convenience only and do not modify
+execution behavior, risk controls, fees, or accounting.
+
 These minimums apply to deposit convenience only and **do not affect strategy selection, execution behavior, fees, or profit mechanics**.  
 
 **Supported DEX Venues (Routing + Execution):**
@@ -57,6 +63,27 @@ These minimums apply to deposit convenience only and **do not affect strategy se
 - 10% Marketing/Ads/Onboarding/Partnerships
 - 55% Ratcheting Stability Reserve System
 - 10% LoopLabs
+
+Genesis Pass NFTs may receive bounded fee-related benefits
+and platform-funded deposit credits, if enabled.
+
+Such benefits:
+- Are non-cash in nature
+- Are not guaranteed
+- Do not alter profit allocation mechanics
+
+Full Genesis Pass terms are defined in the Genesis Pass NFT Program specification.
+
+### Optional Genesis Pass NFT
+
+YieldLoop offers an optional Genesis Pass NFT for early supporters.
+
+Genesis Pass NFTs:
+- Are not required to use the protocol
+- Do not affect strategy selection or execution
+- Provide usability, access, and fee-related benefits only
+
+Genesis Pass NFTs do not represent ownership, profit-sharing, or yield.
 
 ---
 
