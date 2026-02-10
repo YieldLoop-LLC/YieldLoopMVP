@@ -52,7 +52,15 @@ This is the on-chain enforcement layer that makes the product defensible and use
 YieldLoop supports multiple vaults per user by allowing multiple deposit instances.  [oai_citation:4‡YieldLoopMVP.pdf](sediment://file_00000000bb5471f88a4d250d8c785d4d)
 
 Creation sequence (conceptual):
-1) User deposits the minimum base asset amount (v1.2: $250 USDT)  [oai_citation:5‡YieldLoopMVP.pdf](sediment://file_00000000bb5471f88a4d250d8c785d4d)  
+1) User deposits the minimum base asset amount required to create a new vault (v1.2: **$1,000 USDT initial deposit**)
+   - Subsequent deposits into an existing vault follow the protocol minimums:
+     - Standard: **$250**
+     - Basic Genesis NFT: **$175**
+     - Lifetime Genesis NFT: **$100**
+
+Note: These minimums affect deposit convenience only and do not modify execution behavior, strategy selection, fees, or profit mechanics.
+
+[oai_citation:5‡YieldLoopMVP.pdf](sediment://file_00000000bb5471f88a4d250d8c785d4d)  
 2) Protocol assigns a new unique `vaultId`  
 3) Protocol stores the VaultLedger record for that `vaultId` (see Section 5)  
 4) Vault is bound to `owner = msg.sender`  [oai_citation:6‡YieldLoopMVP Appendix.pdf](sediment://file_000000007a3871fda2e6fcd1db40ccad)  
