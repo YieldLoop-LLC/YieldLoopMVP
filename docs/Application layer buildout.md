@@ -122,9 +122,17 @@ Step 5: Accept Disclaimer
 Step 6: Confirm Transaction  
 
 Validation:
-- Minimum $250  
-- Only whitelisted assets  
-- Weights must equal 100  
+- Initial vault creation deposit minimum: **$1,000 USDT**
+- Subsequent deposit minimum (standard): **$250 USDT**
+- Subsequent deposit minimum (Basic Genesis NFT): **$175 USDT**
+- Subsequent deposit minimum (Lifetime Genesis NFT): **$100 USDT**
+- Only whitelisted assets
+- Weights must equal 100
+
+UI Rules:
+- The Create Vault page enforces the **initial** minimum only.
+- Any “Add Deposit” action enforces the **subsequent** minimum, dynamically determined by detected Genesis NFT tier.
+- The UI must display the currently applicable minimum next to the deposit input before confirmation.
 
 ---
 
