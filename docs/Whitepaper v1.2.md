@@ -11,7 +11,17 @@
 
 **Network:** BNB Chain (BSC)  
 **Custody Model:** Self-Custody (DeFi wallet required)  
-**Minimum Deposit:** $250 USDT (BEP-20) per Vault  
+### Minimum Deposits
+
+Opening a YieldLoop vault requires a **$1,000 minimum initial deposit**.
+
+After a vault is created, additional deposits may be made subject to the following minimums:
+
+- Standard users: **$250**
+- Basic Genesis NFT holders: **$175**
+- Lifetime Genesis NFT holders: **$100**
+
+These minimums apply to deposit convenience only and **do not affect strategy selection, execution behavior, fees, or profit mechanics**.  
 
 **Supported DEX Venues (Routing + Execution):**
 - PancakeSwap (PCS)
@@ -139,7 +149,7 @@ By depositing into YieldLoop and activating a vault, users confirm they:
 
 ## 1. Executive Summary
 
-YieldLoop is an automated vault-based trading protocol built on **BNB Chain**. Each user deposits **a minimum of $250 USDT** into an **isolated vault** and selects a controlled allocation across a whitelist of major assets. The system routes trades across **PancakeSwap (PCS)** and **BiSwap**, seeking profitable execution through conservative spread capture and cross-venue arbitrage when available.
+YieldLoop is an automated vault-based trading protocol built on **BNB Chain**. Each user deposits **an initial minimum of $1000 USDT** into an **isolated vault** and selects a controlled allocation across a whitelist of major assets. The system routes trades across **PancakeSwap (PCS)** and **BiSwap**, seeking profitable execution through conservative spread capture and cross-venue arbitrage when available.
 
 YieldLoop is designed around three primary goals:
 
@@ -162,7 +172,17 @@ YieldLoop is designed around three primary goals:
 
 - **Network:** BNB Chain (BSC)
 - **Custody:** Self-custody only (wallet required)
-- **Minimum Deposit:** $250 USDT (BEP-20) per vault
+- ### Minimum Deposits
+
+Opening a YieldLoop vault requires a **$1,000 minimum initial deposit**.
+
+After a vault is created, additional deposits may be made subject to the following minimums:
+
+- Standard users: **$250**
+- Basic Genesis NFT holders: **$175**
+- Lifetime Genesis NFT holders: **$100**
+
+These minimums apply to deposit convenience only and **do not affect strategy selection, execution behavior, fees, or profit mechanics**.
 - **DEX Venues:** PancakeSwap (PCS), BiSwap
 - **Whitelisted Assets:**
   - BTCB
@@ -233,7 +253,7 @@ YieldLoop is not an exchange and not a pooled fund. It is an on-chain automation
 ### 2.1 What YieldLoop Does
 
 When a user creates and activates a vault, YieldLoop:
-1) accepts the user’s USDT deposit (minimum $250)
+1) accepts the user’s USDT deposit (minimum $1000)
 2) allocates capital according to user-selected weights
 3) executes trades via PCS and BiSwap where profitable
 4) realizes profits only when positions close
@@ -615,7 +635,17 @@ A vault is not a UI concept. It is an enforceable on-chain accounting container 
 
 Each YieldLoop vault requires:
 
-- **Minimum deposit: $250 USDT (BEP-20)**
+- ### Minimum Deposits
+
+Opening a YieldLoop vault requires a **$1,000 minimum initial deposit**.
+
+After a vault is created, additional deposits may be made subject to the following minimums:
+
+- Standard users: **$250**
+- Basic Genesis NFT holders: **$175**
+- Lifetime Genesis NFT holders: **$100**
+
+These minimums apply to deposit convenience only and **do not affect strategy selection, execution behavior, fees, or profit mechanics**.
 
 Deposits below the threshold are rejected.
 
@@ -2971,7 +3001,7 @@ On-chain exploitation behavior such as frontrunning, sandwich attacks, and backr
 
 ### Minimum Deposit
 The minimum required deposit amount to create a vault:
-$250 USDT (BEP-20) in v1.2.
+$1000 USDT (BEP-20) in v1.2.
 
 ---
 
