@@ -127,10 +127,20 @@ If you buy a pass today, the terms you bought are the **floor**, not the ceiling
 
 ## Team Allocation
 
-### Lite Pass — Team Mint (Cumulative)
-- For every **100 Lite Passes sold**, the team may mint **5 additional Lite Passes** (cumulative).  
-  - 200 sold → up to 10 mintable, etc.
-- These are intended for promotions, partnerships, and marketing outreach — not personal enrichment.
+## Team Allocation
+
+### Lite Pass — Team Reserve (Initial Allocation)
+
+- The team receives an **initial allocation of 250 Genesis Lite Passes**
+- Purpose: **promotions, partnerships, community outreach, and marketing**
+- These passes are not intended for personal enrichment
+- Any use of YieldLoop by the team occurs under the **same guardrails** as all users
+
+### Lite Pass — Optional Team Minting (Cumulative)
+
+- For every **100 Genesis Lite Passes sold**, the team may mint **5 additional Lite Passes** (cumulative) for promotions and partnerships  
+  - Example: 200 sold → up to 10 additional mintable, etc.
+- These are used for promotional distribution, not sold as a revenue product
 
 ### Lifetime Pass — Team Reserve
 - Passes **501–550** are allocated to the team for the same purpose: promotions, partnerships, and strategic distribution.
