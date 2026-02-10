@@ -109,7 +109,14 @@ Certain parameters are adjustable only within hard-coded ranges:
 - Ratchet allocation: 40% – 70% of fee
 - Dev/Ops allocation: 15% – 30% of fee
 - Marketing allocation: 5% – 15% of fee
-- Minimum deposit: $100 – $10,000
+- Initial vault deposit minimum: $500 – $10,000
+- Subsequent deposit minimum (standard): $100 – $5,000
+- Subsequent deposit minimum (Genesis tiers): $50 – $1,000
+Rules:
+- Governance may not reduce the initial vault deposit minimum below the defined seriousness threshold.
+- Subsequent deposit minimums may be adjusted independently.
+- Genesis NFT deposit minimum overrides apply only to subsequent deposits.
+- No governance action may collapse initial and subsequent deposit minimums into a single value.
 - Max slippage: 20 – 75 bps
 - Max price impact: 20 – 75 bps
 - Max trades per day: 1 – 24
