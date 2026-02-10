@@ -1,464 +1,283 @@
-# YieldLoop Genesis Pass Program  
-**Access • Discounts • Deposit Credits (Non-Withdrawable)**
+# YieldLoop Genesis Pass NFT Program
 
-**Version:** 1.0  
-**Status:** Fundraising-Ready / Grant-Safe Specification  
-**Applies To:** YieldLoop v1.x  
-**Author:** Todd Koletsky  
-
----
-
-## Overview
-
-The **YieldLoop Genesis Pass** is a **time-bound access pass** designed to support early protocol development and user onboarding without introducing emissions, revenue sharing, or yield promises.
-
-The Genesis Pass provides:
-- **Capped performance-fee discounts**
-- **Non-withdrawable deposit credits** (usage subsidy)
-- **Early access and community participation**
-
-The Genesis Pass is **not**:
-- an investment contract  
-- a yield product  
-- a revenue share  
-- a dividend or payout mechanism  
-
-All benefits are optional, usage-based, and may be zero.
+**Document Version:** v1.2  
+**Applies To:** YieldLoop v1.2 MVP  
+**Status:** Canonical Specification  
+**Last Updated:** [set date]
 
 ---
 
-## Core Design Principles
+## 1. Purpose
 
-- **Boring is good**
-- **No promises**
-- **No emissions**
-- **No withdrawable rewards**
-- **No pooled ownership**
-- **No protocol liabilities created**
-- **Everything expires**
+The Genesis Pass NFT Program exists to:
 
----
+- Fund early YieldLoop development and operations
+- Recognize and reward early supporters
+- Provide **usability, access, and fee-related benefits**
+- Avoid emissions, yield promises, or profit guarantees
+- Preserve protocol durability and regulatory resilience
 
-# Table of Contents
-
-1. **Purpose and Scope**  
-   1.1 What the Genesis Pass Is  
-   1.2 What the Genesis Pass Is Not  
-
-2. **Genesis Pass Structure**  
-   2.1 Time-Bound Access Terms (1–5 Years)  
-   2.2 Pass Lifecycle and Expiration  
-
-3. **Pricing Model**  
-   3.1 Dynamic Loyalty Pricing Schedule  
-   3.2 Renewal and Top-Up Rules  
-
-4. **Fee Discount Benefits**  
-   4.1 Eligible Fees  
-   4.2 Discount Rates and Caps  
-   4.3 Discount Stacking Rules  
-   4.4 Discount Enforcement Timing  
-
-5. **Deposit Credit Program (Usage Subsidy)**  
-   5.1 Purpose of Deposit Credits  
-   5.2 Funding Source (Marketing Budget Allocation)  
-   5.3 Pro-Rata Allocation Method  
-   5.4 Monthly Credit Cap and Discretion  
-   5.5 Credit Application Rules  
-   5.6 Burn-on-Use Requirement  
-   5.7 **90-Day Credit Expiry Policy**  
-   5.8 Non-Withdrawable / Non-Transferable Enforcement  
-
-6. **User Eligibility and Conditions**  
-   6.1 Active Pass Requirement  
-   6.2 Vault Creation Use-Case Only  
-   6.3 No Impact on Vault Guardrails  
-
-7. **Non-Promise and Risk Disclosures**  
-   7.1 No Guaranteed Credits  
-   7.2 Zero-Credit Months  
-   7.3 Program Modification Rights  
-
-8. **Protocol Safeguards**  
-   8.1 Credit Liability Limits  
-   8.2 Abuse Prevention  
-   8.3 Emergency Pause Rights  
-
-9. **Governance and Administration**  
-   9.1 Admin Controls  
-   9.2 Timelock and Transparency  
-
-10. **Future Expansion (Non-Binding)**  
-    10.1 Upgrade Path to Genesis NFT v2  
-    10.2 Vault-Bound Loyalty Systems  
-
-11. **Public-Facing Summary (UI / Docs)**  
+Genesis Pass NFTs are **not investments**, **not yield instruments**, and **not ownership interests**.  
+They provide **convenience and access**, not financial outcomes.
 
 ---
 
----
+## 2. What a Genesis Pass Is — and Is Not
 
-## 1. Purpose and Scope
+### 2.1 What It Is
 
-### 1.1 What the Genesis Pass Is
-The **YieldLoop Genesis Pass** is a **time-bound access pass** that provides optional protocol benefits to early supporters without creating emissions, yield promises, or revenue sharing.
+A Genesis Pass is:
+- A non-fungible access credential
+- A permanent account-level usability modifier
+- A mechanism to reduce friction for committed users
+- A way to support protocol development early
 
-The Genesis Pass exists to:
-- Encourage early participation
-- Reduce friction for vault creation via **non-withdrawable deposit credits**
-- Provide **capped performance-fee discounts**
-- Create a simple, auditable, grant-safe fundraising mechanism
-
-All benefits are **usage-based**, **optional**, and **may be zero**.
-
-### 1.2 What the Genesis Pass Is Not
-The Genesis Pass is **not**:
-- An investment contract
-- A yield product
-- A dividend or revenue share
-- A governance token
-- A transferable reward instrument
-
-No benefit is guaranteed. No benefit compounds. No benefit is withdrawable.
+Benefits are deterministic, transparent, and bounded.
 
 ---
 
-## 2. Genesis Pass Structure
+### 2.2 What It Is Not
 
-### 2.1 Time-Bound Access Terms
-Genesis Passes are issued with fixed-duration terms:
-- **1 Year**
-- **2 Years**
-- **3 Years**
-- **4 Years**
-- **5 Years**
+A Genesis Pass is **not**:
+- A promise of profit or yield
+- A performance multiplier
+- A governance right (unless explicitly defined elsewhere)
+- An ownership stake in YieldLoop
+- A guarantee of outcomes
 
-Benefits apply **only while the pass is active**.  
-Once expired, all benefits cease automatically.
-
-### 2.2 Pass Lifecycle and Expiration
-- Pass benefits activate immediately upon issuance.
-- Benefits terminate at the end of the pass term.
-- Expired passes:
-  - receive no discounts
-  - receive no deposit credits
-  - retain no residual value
-
-There is no grace period after expiration.
+Genesis Pass ownership does **not** affect:
+- Strategy selection
+- Trade execution
+- Risk controls
+- LOOP minting
+- Profit generation
 
 ---
 
-## 3. Pricing Model
+## 3. Genesis Pass Tiers
 
-### 3.1 Dynamic Loyalty Pricing Schedule
-Genesis Pass pricing follows a **declining loyalty schedule** to reward longer commitments:
+YieldLoop defines two Genesis Pass tiers:
 
-| Term | Price |
-|-----:|------:|
-| 1 Year | $100 |
-| 2 Years | $95 |
-| 3 Years | $90 |
-| 4 Years | $85 |
-| 5 Years | $80 |
+### 3.1 Basic Genesis Pass
+- Entry-level Genesis supporter tier
+- Permanent and non-expiring
+- Provides limited usability and access benefits
 
-Pricing is fixed, published in advance, and not subject to market dynamics.
+### 3.2 Lifetime Genesis Pass
+- Highest Genesis supporter tier
+- Permanent and non-expiring
+- Provides maximum allowable usability and access benefits
 
-### 3.2 Renewal and Top-Up Rules
-- Pass holders may **extend or top-up** an active pass **before expiration**.
-- Extensions inherit the **current loyalty pricing** for the selected term.
-- Renewals do not stack terms retroactively.
-- Top-ups do not reset previously elapsed time.
+Tier enforcement is handled at the contract level.
 
 ---
 
-## 4. Fee Discount Benefits
+## 4. Vault Creation Rules (Hard Constraint)
 
-### 4.1 Eligible Fees
-Genesis Pass discounts apply **only** to:
-- **YieldLoop performance fees on realized profits**
+### 4.1 Initial Vault Creation (All Users)
 
-Discounts do **not** apply to:
-- principal
-- deposits
-- withdrawals
-- losses
-- emergency exits
-- any non-performance fees introduced later
+Opening a YieldLoop vault requires a **$1,000 minimum initial deposit**.
 
-### 4.2 Discount Rates and Caps
-- Genesis Pass provides up to **20% off performance fees**
-- Discounts are **stackable with other protocol discounts**
-- **Hard Cap:** total discounts may not exceed **50% of the base performance fee**
+This requirement:
+- Applies to all users
+- Cannot be bypassed by Genesis Pass NFTs
+- Exists to prevent dust vaults and execution inefficiency
+- Mirrors traditional managed investment platforms
 
-### 4.3 Discount Enforcement Timing
-- Discounts are applied at **settlement time** only
-- Discounts do not alter:
-  - execution priority
-  - guardrails
-  - safety checks
-  - trade frequency
-
-### 4.4 No Preferential Treatment
-Genesis Pass holders receive **no execution advantage** and no bypass of protocol safety mechanisms.
+Genesis Pass NFTs **do not** reduce the initial vault creation minimum.
 
 ---
 
-## 5. Deposit Credit Program (Usage Subsidy)
+## 5. Subsequent Deposit Minimums (Usability Benefit)
 
-### 5.1 Purpose of Deposit Credits
-Deposit credits exist solely to **reduce the USDT required** to create a new YieldLoop vault.
+Once a vault exists, additional deposits are permitted subject to the following minimums:
 
-Credits are:
-- **non-withdrawable**
-- **non-transferable**
-- **non-compounding**
-- **burned on use**
+| User Type | Subsequent Deposit Minimum |
+|---------|---------------------------|
+| Standard User | $250 |
+| Basic Genesis Pass Holder | $175 |
+| Lifetime Genesis Pass Holder | $100 |
 
-### 5.2 Funding Source
-Deposit credits may be issued from a **protocol-controlled marketing budget allocation**.
+Rules:
+- Reduced minimums apply **only** to subsequent deposits
+- They affect deposit convenience only
+- They do not modify execution behavior, strategy logic, fees, or accounting
+- They do not alter risk or return profiles
 
-This allocation:
-- is discretionary
-- may be zero in any month
-- creates no obligation or entitlement
+---
 
-### 5.3 Allocation Method
-When issued, deposit credits are allocated:
-- **pro-rata across active Genesis Passes**
-- subject to a **monthly issuance cap**
+## 6. Fee-Related Benefits (If Enabled)
 
-Allocation does not depend on:
-- vault size
-- trading activity
-- historical usage
+Genesis Pass NFTs may provide **bounded fee-related benefits**, subject to protocol configuration.
 
-### 5.4 Credit Application Rules
-- Credits may only be applied **at vault creation**
-- Credits reduce the required USDT deposit
-- Example:
-  - Minimum deposit: $250
-  - Available credit: $30
-  - User deposits $220 USDT
-  - Vault principal = $250
+Possible benefits include:
+- Reduced performance fees
+- Reduced withdrawal-related fees (if applicable)
 
-### 5.5 Burn-on-Use Requirement
-- Credits are **irreversibly burned** when applied
-- Unused credits cannot be reused once burned
+Rules:
+- Fee discounts are optional and configurable
+- Discounts are bounded by governance-defined limits
+- Discounts do not apply retroactively
+- Discounts do not modify profit allocation logic
 
-### 5.6 **90-Day Expiry Policy**
-- Issued credits **expire 90 days** after issuance
-- Expired credits are automatically invalidated
-- Expiry prevents hoarding and aligns incentives with active usage
+Exact fee mechanics are defined in the Performance Fee Addendum.
 
-### 5.7 Non-Promise Statement
+---
+
+## 7. Platform-Funded Deposit Credits (Non-Cash)
+
+The protocol may, at its discretion, allocate a portion of platform revenue
+to Genesis Pass holders in the form of **deposit credits**.
+
 Deposit credits:
-- may be zero
-- may be paused
-- may be discontinued
+- Are denominated in USDT-equivalent value
+- Are applied directly to vault deposits
+- Reduce required out-of-pocket capital
+- Are **not withdrawable**
+- Are **not redeemable for cash**
+- Do not represent ownership or profit entitlement
 
-No expectation of issuance should be assumed.
+Credits may expire if unused, subject to configuration.
 
----
-
----
-
-## 6. User Eligibility and Conditions
-
-### 6.1 Active Pass Requirement
-Genesis Pass benefits apply **only while the pass is active**.
-
-To be eligible for:
-- fee discounts
-- deposit credits
-- access benefits
-
-the user must hold a **non-expired Genesis Pass** at the time of use.
-
-Expired passes confer no residual rights.
-
-### 6.2 Vault Creation Use-Case Only
-Deposit credits may be used **only** to reduce the USDT required to create a **new YieldLoop vault**.
-
-Credits may **not** be used for:
-- adding capital to an existing vault
-- covering losses
-- offsetting withdrawals
-- paying protocol fees directly
-- LOOP redemption
-- any non-vault action
-
-### 6.3 No Impact on Vault Guardrails
-Genesis Pass benefits must **not**:
-- modify vault execution logic
-- bypass risk limits
-- change strategy selection
-- alter safety thresholds
-- affect emergency behavior
-
-All vaults operate under identical guardrails regardless of pass ownership.
+Deposit credits function as **platform-funded participation incentives**, not income.
 
 ---
 
-## 7. Non-Promise and Risk Disclosures
+## 8. Zero-Benefit Condition (Explicit)
 
-### 7.1 No Guaranteed Benefits
-All Genesis Pass benefits:
-- are optional
-- are usage-based
-- may be zero
-- may be paused or discontinued
+Genesis Pass benefits are **not guaranteed**.
 
-Holding a Genesis Pass does **not** guarantee:
-- deposit credits
-- fee reductions in every cycle
-- profitability
-- protocol uptime
-- continued program availability
+The protocol may, at any time:
+- Provide zero deposit credits
+- Provide zero fee discounts
+- Temporarily disable Genesis-related benefits
 
-### 7.2 Zero-Credit Months
-The protocol may issue **no deposit credits** in any given month due to:
-- budget constraints
-- market conditions
-- strategic decisions
-- system pauses
+Zero-benefit periods:
+- Do not constitute a breach
+- Do not create an obligation
+- Do not imply failure of the Genesis Pass program
 
-Zero-credit months do not constitute a breach of terms.
-
-### 7.3 No Financial Representation
-The Genesis Pass must never be marketed or represented as:
-- an investment
-- a profit-sharing mechanism
-- a yield-bearing product
-- a claim on protocol revenue
-
-Benefits exist solely to reduce usage friction.
+Genesis Pass ownership does not entitle the holder to continuous benefits.
 
 ---
 
-## 8. Protocol Safeguards
+## 9. Community and Communication Access
 
-### 8.1 Credit Liability Limits
-To prevent runaway liabilities:
-- monthly credit issuance is **explicitly capped**
-- unused credits expire after 90 days
-- credits are burned on use
-- credits cannot accumulate indefinitely
+Genesis Pass holders may receive access to:
+- Private or gated Discord channels
+- Early announcements and protocol updates
+- Development progress discussions
+- Feedback and community discussion spaces
 
-The protocol is never required to issue credits.
-
-### 8.2 Abuse Prevention
-The system must prevent:
-- credit reuse
-- credit transfer
-- flash-use behavior
-- fee manipulation
-- vault gaming
-
-Credits and discounts are enforced at **deterministic checkpoints** only.
-
-### 8.3 Emergency Pause Rights
-The protocol may pause:
-- Genesis Pass issuance
-- deposit credit issuance
-- fee discount application
-
-Emergency pauses:
-- do not move user funds
-- do not invalidate existing vaults
-- do not retroactively remove applied discounts
+Community access:
+- Confers no governance rights by default
+- Does not guarantee influence over protocol decisions
+- May be modified or revoked as needed
 
 ---
 
-## 9. Governance and Administration
+## 10. Early Access and Previews (Optional)
 
-### 9.1 Admin Controls
-Administrative actions affecting the Genesis Pass include:
-- pausing issuance
-- adjusting monthly credit caps (within published bounds)
-- disabling credit issuance
-- updating documentation language
+Genesis Pass holders may receive:
+- Early access to new UI features
+- Participation in beta testing
+- Preview access to upcoming tools or dashboards
 
-All actions must be:
-- transparent
-- auditable
-- executed via multisig
-
-### 9.2 Timelock and Transparency
-Non-emergency changes must:
-- be subject to a **timelock**
-- be publicly announced
-- include clear rationale
-
-Emergency actions may bypass timelock **only** to preserve protocol safety.
+Early access does **not**:
+- Affect execution priority
+- Change protocol behavior
+- Grant financial or strategic advantage
 
 ---
 
----
+## 11. Interaction with LOOP
 
-## 10. Future Expansion (Non-Binding)
+Genesis Pass NFTs have **no direct interaction** with LOOP.
 
-### 10.1 Upgrade Path to Genesis NFT v2
-The Genesis Pass program is intentionally simple and time-bound.  
-Future versions of YieldLoop **may** introduce more advanced loyalty mechanisms, including NFT-based systems.
+Specifically:
+- NFTs do not mint LOOP
+- NFTs do not boost LOOP issuance
+- NFTs do not affect LOOP redemption
+- NFTs do not modify the LOOP Redemption Pool
 
-Any such upgrade:
-- will be **opt-in**
-- will not retroactively alter Genesis Pass terms
-- will be documented in a separate specification
-- will not convert Genesis Passes into financial instruments
-
-The Genesis Pass is **not** a placeholder token and carries no implied upgrade rights.
-
-### 10.2 Vault-Bound Loyalty Systems
-Future loyalty systems may introduce:
-- vault-bound benefits
-- per-vault discount logic
-- non-emissive incentive structures
-
-These features are explicitly **out of scope** for Genesis Pass v1.
+LOOP remains:
+- A mint-and-burn receipt token
+- Backed only by realized trading profit
+- Independent of NFT ownership
 
 ---
 
-## 11. Public-Facing Summary (UI / Docs)
+## 12. Transferability and Activation
 
-### What Is the YieldLoop Genesis Pass?
-The YieldLoop Genesis Pass is an optional, time-limited access pass for early users.
+Genesis Pass NFTs may be transferable unless restricted by contract.
 
-It provides:
-- **Fee discounts on realized profits** (capped)
-- **Deposit credits** that reduce the cost of creating a vault
-- Early access and community participation
+Optional activation rules (if enabled):
+- NFT must be held or staked to activate benefits
+- Unstaking pauses benefits
+- One Genesis Pass may be active per vault
 
-### What It Is Not
-The Genesis Pass is not:
-- an investment
-- a yield product
-- a profit share
-- a dividend
-- a governance right
-
-### How Deposit Credits Work
-- Credits may be issued from the protocol’s marketing budget
-- Credits reduce the USDT needed to create a vault
-- Credits cannot be withdrawn or transferred
-- Credits expire after **90 days**
-- Credits may be **zero** in any month
-
-### Plain-English Rule
-If YieldLoop does not generate profits or chooses not to issue credits, **nothing breaks**.
-
-The system simply continues operating.
+Benefits apply only to the current holder.
 
 ---
 
-### Design Intent
-YieldLoop is designed to be:
-- boring
-- transparent
-- survivable
+## 13. Governance, Pausing, and Control
 
-The Genesis Pass exists to reduce friction — not to promise outcomes.
+The protocol may, at any time:
+- Pause Genesis Pass issuance
+- Pause Genesis-related deposit credits
+- Pause Genesis-related fee discounts
+- Modify Genesis-related access features
+
+Such actions:
+- Do not affect user vault balances
+- Do not move funds
+- Do not retroactively alter applied benefits
+
+All Genesis Pass parameters are:
+- Hard-coded or governance-bounded
+- Subject to timelock where applicable
+- Non-discretionary once applied
+
+Genesis Pass NFTs do **not** grant governance rights unless explicitly stated elsewhere.
 
 ---
 
-*End of Genesis Pass Specification v1.0*
+## 14. Risk Disclosure
+
+Holding a Genesis Pass NFT:
+- Does not reduce trading risk
+- Does not guarantee profit
+- Does not insure deposits
+- Does not prevent losses
+
+YieldLoop is a trading protocol. Losses are possible.
+
+Genesis Pass NFTs improve **experience**, not outcomes.
+
+---
+
+## 15. Design Intent (Plain English)
+
+Genesis Pass NFTs exist to:
+- Fund development honestly
+- Reward early supporters responsibly
+- Provide convenience without entitlement
+- Avoid hype mechanics
+- Avoid Ponzi-shaped incentives
+
+They are intentionally boring.
+
+Boring systems survive.
+
+---
+
+## 16. Non-Negotiable Constraints
+
+The protocol must never:
+- Tie NFT ownership to profit guarantees
+- Allow NFTs to bypass vault seriousness thresholds
+- Modify execution behavior based on NFT tier
+- Mint LOOP based on NFT ownership
+- Introduce hidden or preferential advantages
+
+Any such change would invalidate the Genesis Pass design.
