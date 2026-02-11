@@ -6,78 +6,94 @@
 
 ---
 
-## 1. Purpose
+## Referral Program Overview
 
-The YieldLoop Referral Program is designed to:
-- encourage high-quality, long-term user onboarding
-- reward real participation without cash payouts
-- avoid yield promises, revenue sharing, or MLM-style incentives
+If you’re expecting a referral program that pays you cash for tweeting a link, you’re on the wrong website.
 
-All referral incentives are **usage-based**, **time-gated**, and **non-withdrawable**.
+The YieldLoop referral program is **delayed, capped, non-cash, and usage-bound**.  
+It rewards **participation**, not spam. Try to contain your enthusiasm.
 
 ---
 
-## 2. Core Principles (Hard Rules)
+## Core Principles (Hard Rules)
 
-- No upfront bonuses
-- No cash payouts
-- No rewards without real usage
-- No impact on vault accounting, NAV, or LOOP mechanics
-- No guaranteed value
+These are rules, not suggestions:
 
-The referral program must remain **boring, delayed, and conditional**.
+- No upfront bonuses  
+- No cash payouts  
+- No rewards without real usage  
+- No impact on vault accounting, NAV, or LOOP mechanics  
+- No guaranteed value  
+
+The referral program must remain **boring, delayed, and conditional**.  
+If it ever resembles yield, income, or guaranteed value, the design has failed.
 
 ---
 
-## 3. Referral Definitions
+## Definitions
 
-- **Referrer:** An existing YieldLoop user who refers new users
-- **Referred User:** A new YieldLoop user who joins via a referral
-- **Valid Referral:** A referred user who meets all qualification requirements defined below
+- **Referrer** — An existing YieldLoop user who refers new users  
+- **Referred User** — A new user who joins via a referral  
+- **Valid Referral** — A referred user who meets all qualification requirements  
 
 Each referral is tracked **independently**.
 
 ---
 
-## 4. Referral Qualification Requirements
+## Qualification Requirements
 
-To count as a valid referral, a referred user must:
+To count as a valid referral, a referred user must complete **all four** of the following:
 
-1. Create a YieldLoop vault
-2. Deposit funds normally (no deposit credits or discounts)
-3. Approve a trading strategy
+1. Create a YieldLoop vault  
+2. Deposit funds normally (no deposit credits or discounts)  
+3. Approve a trading strategy  
 4. Keep the vault open and active for **90 consecutive days**
 
-Notes:
-- No profit is required
-- No minimum trading frequency is required
-- Market conditions do not affect referral validity
+### Things That Do *Not* Matter
 
-If a referred user closes their vault before 90 days, that referral does **not** count and must be replaced.
+- No profit is required  
+- No minimum trading frequency is required  
+- Market conditions do not affect referral validity  
+
+If a referred user closes their vault before 90 days:
+- That referral **does not count**
+- It must be replaced
+- No partial credit
+- No exceptions
+- No appeals
 
 ---
 
-## 5. Referrer Reward — Deposit Credit
+## Referrer Reward — Deposit Credit
 
-### 5.1 Eligibility
+### Eligibility
 
-A referrer becomes eligible for a reward once:
-- **10 valid referrals** have each completed 90 days
+A referrer becomes eligible for a reward once **10 valid referrals** have each completed their 90-day qualification period.
 
 Each set of 10 referrals is evaluated independently.
 
----
-
-### 5.2 Reward Grant
-
-When eligibility is met:
-- the referrer receives a **$100 non-withdrawable deposit credit**
-- the credit is issued automatically
-- the credit is visible in the UI
+Yes — that’s ten people who each stuck around for three months.  
+This is intentionally difficult.
 
 ---
 
-### 5.3 Deposit Credit Rules
+### What You Get
+
+When eligibility is met, the referrer receives:
+
+- **$100 non-withdrawable deposit credit**
+- Issued automatically
+- Visible in the UI
+
+This credit functions **identically** to the marketing deposit credits distributed to:
+- Genesis Lite Pass holders  
+- Lifetime Genesis Pass holders  
+
+Same rules. Same restrictions. Same expiration.
+
+---
+
+### Deposit Credit Rules
 
 - Credit applies only to the **next deposit**
 - Minimum deposit required to use credit: **$100**
@@ -88,79 +104,128 @@ When eligibility is met:
 - Credit expires **90 days after issuance** if unused
 - Credits are **stackable** across multiple completed referral sets
 
+#### Expiration Handling
+
+- Any **unused or expired referral deposit credit** is permanently reclaimed by the protocol
+- Reclaimed credits are routed **one-way** into the **Ratchet Pool**
+- This action:
+  - Creates **no user claim**
+  - Provides **no guarantee**
+  - May have **no observable effect**
+- The ratchet may pause indefinitely regardless of expired credit inflows
+
+To be clear:
+- You cannot cash this out  
+- You cannot send it to someone  
+- You can only use it to deposit more into your own vault  
+
+That’s it.
+
 ---
 
-## 6. Referred User Incentive — Fee Discount
+## Referred User Incentive — Fee Discount
 
-### 6.1 Discount Terms
+### Discount Terms
 
 Referred users receive:
-- **20% off performance fees** for their first **180 days**
+
+- **20% off performance fees for the first 180 days**
+
+This is the **same discount rate as the Genesis Lite Pass**.
+
+Discount interaction rules:
+- Referral discounts **do not stack** with Genesis Pass discounts
+- The **higher applicable discount** is always used
+- If you hold a Lifetime Genesis Pass (50% discount), the referral discount is irrelevant
+
+---
+
+### Discount Mechanics
 
 The discount:
-- applies only to performance fees on **realized profit**
-- does not apply to losses
-- does not apply to deposits, withdrawals, or emergency exits
-- does not roll over or extend
-- expires automatically after 180 days
+- Applies only to performance fees on **realized profit**
+- Does not apply to losses
+- Does not apply to deposits, withdrawals, or emergency exits
+- Does not roll over or extend
+- Expires automatically after **180 days**
 
 If no profit is realized during the discount period, no benefit is granted.
 
+- Discount is applied automatically at settlement
+- No user action or claim required
+- After 180 days, all fees revert to standard protocol rates unless a Genesis Pass discount applies
+
+In plain terms:  
+You get a discount on fees you only pay if you made money.  
+If you don’t make money, the discount is worth **exactly nothing**.
+
+We told you this was boring.
+
 ---
 
-### 6.2 Enforcement
-
-- The discount is applied automatically at settlement
-- No user action or claim is required
-- After 180 days, all fees revert to standard protocol rates
-
----
-
-## 7. Abuse Prevention
+## Abuse Prevention
 
 The protocol reserves the right to:
-- disqualify self-referrals
-- disqualify wallet clusters under common control
-- invalidate referrals or rewards resulting from manipulation or abuse
 
-No KYC is required.
+- Disqualify self-referrals  
+- Disqualify wallet clusters under common control  
+- Invalidate referrals or rewards resulting from manipulation or abuse  
+
+No KYC is required.  
 Pattern-based enforcement is sufficient.
 
+If you’re thinking about gaming this with 10 burner wallets, each holding a vault open for 90 days with real deposits — honestly, at that point you’ve almost earned it.  
+But we’ll probably still catch you.
+
 ---
 
-## 8. Governance and Control
+## Governance and Control
 
-Referral program parameters, including:
-- referral count requirements
-- reward amounts
-- discount percentages
-- eligibility windows
+Referral program parameters — including:
+
+- Referral count requirements  
+- Reward amounts  
+- Discount percentages  
+- Eligibility windows  
 
 Are:
-- configurable by admin
-- subject to governance timelock
-- bounded by hard-coded maximums
+- Configurable by admin
+- Subject to governance timelock
+- Bounded by hard-coded maximums
 
 The referral program:
-- may be paused or modified
-- may be disabled entirely
-- does not affect core protocol operation
+- May be paused, modified, or disabled entirely
+- Does not affect core protocol operation
+
+As with Genesis Pass parameters:
+- Referral terms may be **improved**
+- They will **never be made worse** for existing participants
 
 ---
 
-## 9. Design Intent (Non-Negotiable)
+## Design Intent (Non-Negotiable)
 
 The referral program is intentionally:
-- delayed
-- capped
-- non-cash
-- usage-bound
-- non-promissory
+
+- **Delayed** — 90 days before a referral even counts  
+- **Capped** — $100 per 10 valid referrals  
+- **Non-cash** — deposit credit only  
+- **Usage-bound** — real vaults, real deposits, real time  
+- **Non-promissory** — no guaranteed value of any kind  
 
 It exists to reward **participation**, not speculation.
 
-If the referral program ever resembles yield, income, or guaranteed value,
-the design has failed.
+---
+
+## Required Disclosure
+
+The referral program does not constitute income, yield, or a promise of value.
+
+- Deposit credits are non-withdrawable and may expire  
+- Expired credits are reclaimed by the protocol and routed to the Ratchet Pool  
+- Fee discounts apply only to realized profit and may provide no benefit if no profit is realized  
+- Referral discounts do not stack with Genesis Pass discounts — the higher applicable rate is used  
+- The program may be modified, paused, or discontinued at any time via governance timelock  
 
 ---
 END OF DOCUMENT
