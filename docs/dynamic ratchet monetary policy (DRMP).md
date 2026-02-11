@@ -345,4 +345,132 @@ Reason codes must be standardized for:
 - shock protection must disable relief automatically during stress  
 - deposit credit is the only permitted “external” relief form in v1.x if enabled  
 - deposit credit must never be withdrawable or convertible into USDT/LOOP  
-- no discretionary “we decided to distribute” actions are allowed  
+- no discretionary “we decided to distribute” actions are allowed
+
+
+---
+
+---
+
+## I.12 Deposit Credit Eligibility — Minimum Active Duration Requirement
+
+### I.12.1 Purpose
+
+To prevent opportunistic capital parking and snapshot gaming,  
+Deposit Credit eligibility requires sustained vault participation.
+
+Relief distribution is intended to reward **committed capital exposure**,  
+not short-term positioning.
+
+---
+
+### I.12.2 Minimum Active Duration Rule (Required)
+
+A vault is eligible for Deposit Credit distribution only if:
+
+1. `VaultActiveDuration >= 90 days`
+2. `principalRemainingUSDT > 0`
+3. Vault state is NOT:
+   - CLOSE_REQUESTED
+   - CLOSE_PENDING
+   - CLOSED
+   - ERROR_LOCK
+4. Vault has not been paused for more than `MaxPauseAllowance` within the qualifying window.
+
+Where:
+
+`VaultActiveDuration = CurrentBlockTimestamp - FirstDepositTimestamp`
+
+Hard Rule:
+
+- If `VaultActiveDuration < 90 days`, vault is excluded from relief distribution.
+- No partial eligibility scaling is permitted below 90 days.
+
+---
+
+### I.12.3 Time-Weighted Principal Requirement (Anti-Gaming Rule)
+
+In addition to minimum duration, vault must meet a time-weighted exposure requirement.
+
+Define:
+
+`TimeWeightedPrincipal = Σ (principalRemainingUSDT × timeHeld)`
+
+over the last 90 days.
+
+Vault qualifies only if:
+
+`TimeWeightedPrincipal >= MinimumExposureThreshold`
+
+Where:
+
+- `MinimumExposureThreshold` is a hardcoded value
+- Designed to prevent:
+  - temporary deposits
+  - short-lived capital injections before distribution snapshot
+
+This ensures capital was meaningfully deployed over time.
+
+---
+
+### I.12.4 Snapshot Manipulation Protection
+
+To prevent gaming:
+
+- Relief eligibility snapshot must use a rolling time-weighted calculation.
+- Eligibility cannot rely on single-block principal balance.
+- Any principal deposited within `EligibilityBufferWindow` (e.g., 7 days prior to distribution)
+  may be excluded from eligibility weighting.
+
+This ensures late capital injection does not capture disproportionate credit.
+
+---
+
+### I.12.5 No Retroactive Qualification
+
+Vaults reaching 90 days after distribution block:
+
+- Do NOT receive retroactive credits.
+- Must qualify at the time of relief calculation.
+
+No exceptions.
+
+---
+
+### I.12.6 Deterministic Enforcement
+
+All eligibility logic must be:
+
+- On-chain deterministic
+- Formula-driven
+- Non-discretionary
+- Not governance-controlled at runtime
+
+Any manual override is prohibited.
+
+---
+
+### I.12.7 Event Emission (Required)
+
+Protocol must emit:
+
+- `ReliefEligibilityEvaluated(vaultId, eligibleBoolean, timestampUTC)`
+- `ReliefEligibilityRejected(vaultId, reasonCode, timestampUTC)`
+
+Reason codes must include:
+
+1. INSUFFICIENT_DURATION  
+2. INSUFFICIENT_EXPOSURE  
+3. INVALID_VAULT_STATE  
+4. PAUSE_LIMIT_EXCEEDED  
+
+---
+
+### I.12.8 Non-Negotiable Rule
+
+Deposit Credit is a reward for sustained system participation.
+
+Short-term capital parking, timing arbitrage, or opportunistic activation  
+must not qualify for relief distribution.
+
+---
