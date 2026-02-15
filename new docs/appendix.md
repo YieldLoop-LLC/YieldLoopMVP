@@ -214,6 +214,132 @@ These limits are contract enforced.
 
 ---
 
+## A.13 Fortification Mode Trigger
+
+Fortification Mode activates deterministically when:
+
+Coverage ≥ 1.18
+AND
+(RP / S) ≥ 0.10 × F
+
+Where:
+
+Coverage = RR / (S × F)
+RP = Ratchet Pool balance
+S = Total circulating LOOP supply
+F = Current floor
+
+If both conditions evaluate true:
+
+FortificationMode = Active
+
+Otherwise:
+
+FortificationMode = Inactive
+
+FortificationMode status is publicly observable from contract state.
+
+Governance may not override activation conditions.
+
+---
+
+## A.14 Fortification Parameter Constraints
+
+If FortificationMode = Active:
+
+SmoothingFactor ∈ [0.07 , 0.09]
+Cooldown ∈ [60 hours , 72 hours]
+ΔF ≤ 0.015 × F
+
+Where:
+
+ΔF = Applied floor increase
+F = Current floor
+
+These bounds override the standard ranges defined in Section A.7
+for the duration of FortificationMode.
+
+Upon deactivation,
+standard smoothing and cooldown bounds resume.
+
+---
+
+## A.15 System Vault Maximum Exposure
+
+System Vault deployment must satisfy:
+
+SV_Deployment ≤ SV_MaxExposure
+
+Where:
+
+SV_MaxExposure = min(
+0.15 × RP,
+0.08 × RR
+)
+
+RP = Ratchet Pool balance
+RR = Reward Reserve balance
+
+Governance may reduce but may not increase these bounds.
+
+---
+
+## A.16 System Vault Coverage Constraint
+
+System Vault deployment is permitted only if:
+
+Coverage ≥ TargetCoverage
+
+Where:
+
+Coverage = RR / (S × F)
+
+If Coverage < TargetCoverage:
+
+New SV deployment must pause.
+
+Existing exposure may remain but may not increase.
+
+---
+
+## A.17 System Vault Drawdown Protection
+
+Define:
+
+SV_Peak = Highest historical SV_NAV since last reset
+SV_NAV = Current System Vault net asset value
+
+Drawdown = (SV_Peak − SV_NAV) / SV_Peak
+
+If:
+
+Drawdown ≥ 0.20
+
+Then:
+
+- ≥ 90% of SV capital must shift to USDT
+- New exposure increases are disabled
+- Deployment freeze remains until next ratchet cooldown cycle
+
+This constraint limits compounding downside risk.
+
+---
+
+## A.18 Structural Isolation Confirmation
+
+System Vault losses do not modify:
+
+- RR (Reward Reserve)
+- RP (Ratchet Pool)
+- S (LOOP supply)
+- F (Floor)
+
+System Vault capital remains segregated from structural reserves.
+
+All invariants defined in Appendix B remain unaffected.
+ 
+---
+
 # Appendix B — Economic Invariant Summary
 
 1. LOOP minting always increases Reward Reserve.
