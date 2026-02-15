@@ -540,6 +540,130 @@ YieldLoop’s trading engine is intentionally bounded to reduce systemic fragili
 
 ---
 
+## 4.9 Profit Generation Framework
+
+YieldLoop’s trading engine operates under bounded spot-market execution constraints.
+Profit generation is derived exclusively from structural inefficiencies and volatility behavior
+within the approved asset universe.
+
+The protocol does not rely on leverage, emissions, yield farming, or directional speculation.
+Profit is generated through disciplined execution under defined risk constraints.
+
+---
+
+### 4.9.1 Structural Edge Categories
+
+YieldLoop’s execution model derives expectancy from the following bounded mechanisms:
+
+**1. Cross-DEX Price Dislocation**
+
+Temporary pricing inefficiencies between approved decentralized exchanges
+(PancakeSwap and Biswap) may create arbitrage opportunities.
+
+Execution occurs only when:
+- Spread exceeds gas and slippage estimates
+- Liquidity depth meets minimum thresholds
+- Failure thresholds are not exceeded
+
+This mechanism seeks low-margin, high-discipline micro-inefficiencies.
+
+---
+
+**2. Volatility Harvesting via Rebalancing**
+
+Digital assets exhibit short-term mean reversion and medium-term trend behavior.
+YieldLoop captures volatility through:
+
+- Partial rebalancing into price spikes
+- Drawdown-based accumulation
+- Automatic stablecoin reallocation during volatility expansion
+- Exposure reduction under drawdown thresholds
+
+This framework is designed to convert volatility into realized profit
+without directional leverage.
+
+---
+
+**3. Trend Participation Within Bounds**
+
+During strong directional regimes,
+allocation parameters may shift within contract-defined limits to allow
+greater participation in trending assets.
+
+Exposure adjustments remain:
+- Non-leveraged
+- Asset-capped
+- Drawdown-constrained
+- Stable-buffer protected
+
+The protocol does not pursue unbounded trend exposure.
+
+---
+
+**4. Defensive Capital Preservation**
+
+Profit expectancy is inseparable from loss containment.
+
+YieldLoop enforces:
+- No leverage
+- No derivatives
+- No lending
+- No cross-chain bridging
+- No external protocol yield exposure
+- Deterministic drawdown triggers
+
+Reducing catastrophic loss probability is a primary source of long-term expectancy.
+
+---
+
+### 4.9.2 Conservative Expectancy Assumptions
+
+YieldLoop is designed under conservative operating assumptions:
+
+- Average monthly gross return target range: 1.5% – 2.2%
+- Negative month frequency assumption: 30% – 40%
+- No dependency on sustained bull market conditions
+- No forward yield projections embedded in contract logic
+
+Actual performance may vary materially from modeled assumptions.
+
+The system is not designed to outperform parabolic markets.
+It is designed to convert volatility into disciplined realized profit under bounded risk conditions.
+
+---
+
+### 4.9.3 Regime Behavior
+
+YieldLoop does not require directional market growth to function.
+The execution engine is intended to operate across:
+
+- Bull regimes
+- Bear regimes
+- Sideways volatility
+- Liquidity fragmentation events
+
+During strong expansion regimes, realized profit may increase.
+During contraction regimes, fee capture may slow.
+In both cases, reserve integrity and structural invariants remain unaffected.
+
+Profit variability impacts ratchet cadence,
+but does not impair floor permanence.
+
+---
+
+### 4.9.4 Non-Guarantee Statement
+
+YieldLoop does not guarantee:
+- Positive monthly performance
+- Consistent arbitrage frequency
+- Market outperformance
+- Minimum floor growth rate
+
+Profit generation is probabilistic and market-dependent.
+Structural safety constraints take precedence over return maximization.
+
+---
+
 # 5. Capital Flow & Fee Structure
 
 YieldLoop collects performance fees exclusively on realized profit.  
@@ -1078,6 +1202,96 @@ The Dynamic Ratchet Model defines YieldLoop’s long-term stability and growth d
 
 ---
 
+## 8.9 Surplus Accumulation Mode (Fortification Mode)
+
+YieldLoop incorporates a deterministic surplus-accumulation behavior designed
+to prioritize structural strengthening during periods of elevated profit generation.
+
+This mechanism is referred to as Fortification Mode.
+
+Fortification Mode does not accelerate floor growth.
+It slows visible ratchet cadence in order to deepen reserve strength and
+expand coverage buffers.
+
+---
+
+### 8.9.1 Activation Conditions
+
+Fortification Mode becomes active when both conditions are satisfied:
+
+1. Coverage ≥ 1.18
+2. (RP / S) ≥ 0.10 × F
+
+Where:
+
+Coverage = Reward Reserve / Redemption Liability  
+RP = Ratchet Pool balance  
+S = LOOP supply  
+F = Current floor  
+
+These thresholds are contract-defined.
+
+Governance may not disable Fortification Mode when conditions are satisfied.
+
+---
+
+### 8.9.2 Behavioral Adjustments During Fortification Mode
+
+When Fortification Mode is active:
+
+- SmoothingFactor is constrained to the range [0.07 , 0.09]
+- Ratchet cooldown is constrained to the range [60 hours , 72 hours]
+- Per-event floor increase cap remains ≤ 1.5% of F
+- No acceleration of ratchet cadence is permitted
+
+These constraints override standard ratchet smoothing ranges
+while Fortification Mode remains active.
+
+---
+
+### 8.9.3 Objective
+
+The objective of Fortification Mode is:
+
+- Increase structural coverage before accelerating floor growth
+- Deepen Ratchet Pool surplus capacity
+- Improve redemption resilience
+- Convert temporary bull-market strength into permanent backing depth
+
+During Fortification Mode,
+surplus accumulation takes precedence over visible floor movement.
+
+---
+
+### 8.9.4 Exit Conditions
+
+Fortification Mode automatically deactivates when either:
+
+- Coverage falls below 1.18
+- (RP / S) falls below 0.10 × F
+
+Upon deactivation, ratchet behavior reverts to standard smoothing constraints
+as defined in Sections 8.4 and 8.5.
+
+---
+
+### 8.9.5 Invariant Protection
+
+Fortification Mode does not:
+
+- Alter minimum coverage requirements
+- Permit floor decrease
+- Override funding transfer requirements
+- Allow governance discretion over ratchet funding
+- Modify immutable invariants
+
+Fortification Mode operates strictly within existing economic boundaries.
+
+Its purpose is structural reinforcement,
+not yield acceleration.
+
+---
+
 # 9. System Vault (Stabilization Engine)
 
 The System Vault is a protocol-owned capital buffer designed to absorb excess reserve capital and strengthen long-term structural backing.
@@ -1180,6 +1394,107 @@ The System Vault creates a feedback loop:
 Excess Surplus → Stabilized Deployment → Realized Profit → Reserve Strengthening
 
 This mechanism improves capital efficiency without introducing speculative distribution behavior.
+
+---
+
+## 9.7 System Vault Risk Budget Framework
+
+The System Vault operates under a formally bounded risk budget.
+Its purpose is surplus efficiency and reserve reinforcement,
+not performance maximization.
+
+System Vault deployment is constrained by deterministic exposure limits
+and automatic drawdown controls.
+
+---
+
+### 9.7.1 Maximum Exposure Constraint
+
+Total System Vault deployed capital must not exceed:
+
+SV_MaxExposure = min(
+0.15 × RP,
+0.08 × RR
+)
+
+Where:
+
+RP = Ratchet Pool balance  
+RR = Reward Reserve balance  
+
+This constraint ensures that System Vault exposure remains
+small relative to structural reserves.
+
+Governance may tighten this limit but may not expand it
+beyond these bounds.
+
+---
+
+### 9.7.2 Coverage Protection Constraint
+
+System Vault deployment is permitted only when:
+
+Coverage ≥ TargetCoverage
+
+Where:
+
+Coverage = RR / (S × F)
+
+If Coverage falls below TargetCoverage,
+new System Vault deployment must pause automatically.
+
+This prevents System Vault activity from weakening
+redemption integrity.
+
+---
+
+### 9.7.3 Drawdown Protection Mechanism
+
+System Vault exposure is subject to a deterministic drawdown limit:
+
+SV_DrawdownStop = 20%
+
+If cumulative unrealized or realized drawdown
+from local peak exceeds 20%:
+
+- ≥ 90% of System Vault capital must shift to USDT
+- New exposure increases are disabled
+- Deployment remains restricted until next ratchet cooldown cycle
+
+This mechanism limits tail-risk exposure
+and prevents compounding losses.
+
+---
+
+### 9.7.4 Non-Interference Rule
+
+System Vault losses:
+
+- Do not reduce Reward Reserve
+- Do not reduce Ratchet Pool
+- Do not impact user principal
+- Do not trigger floor decrease
+
+System Vault capital is fully segregated.
+
+---
+
+### 9.7.5 Operational Purpose
+
+The System Vault exists to:
+
+- Absorb excess surplus when reserve bands are exceeded
+- Improve long-term capital efficiency
+- Reinforce reserves through profit routing
+
+It does not function as:
+
+- A growth accelerator
+- A speculative allocation vehicle
+- A discretionary treasury
+- A yield amplification engine
+
+Structural stability takes precedence over return generation.
 
 ---
 
