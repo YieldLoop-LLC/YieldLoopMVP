@@ -2084,6 +2084,145 @@ These invariants are foundational and define YieldLoop’s structural discipline
 
 ---
 
+## 14.9 Stress Behavior Framework
+
+YieldLoop is designed to operate across adverse market and liquidity conditions
+without violating economic invariants.
+
+The following scenarios describe deterministic system behavior
+under stress conditions.
+
+---
+
+### 14.9.1 Prolonged Bear Regime
+
+In a sustained contraction environment:
+
+- Trading profitability may decline.
+- Performance fee collection may slow or pause.
+- LOOP minting may decrease.
+- Ratchet cadence may pause.
+
+However:
+
+- Floor does not decrease.
+- Reward Reserve remains intact.
+- Ratchet Pool remains segregated.
+- User principal remains isolated per vault.
+
+If no realized profit occurs,
+no performance fee is collected,
+and no LOOP is minted.
+
+The system contracts activity without structural impairment.
+
+---
+
+### 14.9.2 Multi-Cycle Negative Performance
+
+If multiple vault cycles produce net loss:
+
+- No performance fees are collected.
+- No LOOP is minted.
+- No reserve transfers occur.
+- Ratchet events pause automatically.
+
+Reserves are not drawn down to support trading losses.
+Structural backing remains unchanged.
+
+The system absorbs trading underperformance
+without reflexive destabilization.
+
+---
+
+### 14.9.3 Redemption Surge Scenario
+
+If redemption demand increases materially:
+
+- LOOP is burned upon redemption request.
+- USDT is transferred from Reward Reserve.
+- If immediate liquidity is insufficient,
+  redemption requests enter a FIFO queue.
+
+The protocol does not:
+
+- Mint LOOP to satisfy redemption
+- Reduce the floor price
+- Access Ratchet Pool directly for redemption
+- Access System Vault directly for redemption
+
+Coverage invariants remain enforced.
+
+Redemption pressure may reduce circulating supply,
+which proportionally reduces redemption liability.
+
+---
+
+### 14.9.4 Bull Market Acceleration
+
+During periods of elevated realized profit:
+
+- Ratchet Pool accumulation increases.
+- Coverage may exceed target band.
+- Fortification Mode may activate.
+
+During Fortification Mode:
+
+- Surplus accumulation is prioritized.
+- Ratchet cadence remains constrained.
+- Coverage buffers expand before visible floor acceleration.
+
+Temporary market strength is converted
+into structural depth rather than rapid floor movement.
+
+---
+
+### 14.9.5 Liquidity Fragmentation or DEX Disruption
+
+In the event of DEX instability:
+
+- Arbitrage module may auto-disable.
+- Trading risk parameters may tighten.
+- Governance may pause new trades.
+- Existing positions settle at cycle end.
+
+No reserve capital is deployed to compensate for execution failure.
+User principal remains isolated within vault contracts.
+
+---
+
+### 14.9.6 System Vault Loss Scenario
+
+If System Vault experiences loss:
+
+- Loss remains confined to SV capital.
+- Reward Reserve remains unchanged.
+- Ratchet Pool remains unchanged.
+- Floor remains unchanged.
+
+Drawdown protection automatically reduces exposure.
+
+System Vault cannot impair structural reserves.
+
+---
+
+### 14.9.7 Structural Summary
+
+Under all stress conditions:
+
+- Floor cannot decrease.
+- LOOP cannot mint without backing.
+- User principal cannot fund reserves.
+- Ratchet cannot execute without funding.
+- Governance cannot withdraw reserve capital.
+
+YieldLoop is designed to reduce activity during stress,
+not violate invariants.
+
+Structural preservation precedes growth.
+
+---
+
 # 15. Risk Disclosures
 
 Participation in YieldLoop involves material risk.  
